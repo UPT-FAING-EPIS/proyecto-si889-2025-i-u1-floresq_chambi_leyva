@@ -1,0 +1,63 @@
+name: Semgrep Analysis
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  semgrep-analysis:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r Doc2Markdown/requirements.txt  # Ajustado a la ruta correcta
+
+      - name: Set up Semgrep
+        run: docker pull semgrep/semgrep
+
+      - name: Run Semgrep (SARIF Output)
+        run: docker run --rm -v $(pwd):/src semgrep/semgrep semgrep scan --config="p/default" --sarif --output=report.sarif --metrics=off
+
+      - name: Upload SARIF file to GitHub Code Scanning
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: report.sarif
+
+      - name: Run Semgrep (JSON Output)
+        run: docker run --rm -v $(pwd):/src semgrep/semgrep semgrep scan --config="p/default" --json --output semgrep.json --metrics=off
+
+      - name: Install prospector-html
+        run: python -m pip install prospector2html
+
+      - name: Convert Semgrep results to HTML
+        run: prospector-html --input semgrep.json --output semgrep-report.html --filter semgrep || true
+
+      - name: Move report to Reportes folder
+        run: |
+          mkdir -p Reportes
+          mv semgrep-report.html Reportes/
+
+      - name: Publish report to GitHub Pages
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git fetch origin gh-pages
+          git checkout gh-pages
+          cp Reportes/semgrep-report.html reporte-semgrep.html
+          git add reporte-semgrep.html
+          git commit -m "Publishing Semgrep report as reporte-semgrep.html" || echo "No changes to commit"
+          git push origin gh-pages
