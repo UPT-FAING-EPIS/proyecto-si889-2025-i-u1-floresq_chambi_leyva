@@ -1,0 +1,7 @@
+subscription_id   = "d542c8f7-209d-484b-acfe-b93d6829d00f"
+client_id         = "82c09e0f-c027-4210-b4c9-c7a46af677bf"
+client_secret     = "qrA8Q~JtrbZtq3zLHcu9uYP1KZa1qLtvpm9lBbDy"
+tenant_id         = "93ded5ba-cc60-4df8-8001-98dddd39ab56"
+sqladmin_username = "miservidorsql25"
+sqladmin_password = "JaimeUpt2025"
+secret_key = "mWJkMUtLpXO~>Qlhu|iLj~=%C,T/?fsZ"

@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div>
+    <h2>Conversión de Documentos</h2>
+
+    <form id="uploadForm" enctype="multipart/form-data">
+        <div class="mb-3">
+            <label for="title" class="form-label">Título del Documento</label>
+            <input type="text" id="title" class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <input type="file" id="fileInput" class="form-control" required>
+        </div>
+        <button type="submit" class="btn btn-success">Subir y Convertir</button>
+    </form>
+
+    <hr>
+
+    <h3>Mis Documentos Convertidos</h3>
+    <ul id="documentList" class="list-group"></ul>
+</div>
+
+<script src="/static/js/document.js"></script>
+{% endblock %}
