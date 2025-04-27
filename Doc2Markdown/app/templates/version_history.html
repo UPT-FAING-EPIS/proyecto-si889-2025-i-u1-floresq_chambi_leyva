@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div>
+    <h2>Historial de Versiones</h2>
+
+    <div class="mb-3">
+        <label for="documentSearch" class="form-label">Buscar documento por nombre</label>
+        <input type="text" id="documentSearch" class="form-control" placeholder="Introduce el nombre del documento">
+        <button id="searchBtn" class="btn btn-primary mt-2">Buscar</button>
+    </div>
+
+    <div id="searchResults">
+        <ul id="versionsList" class="list-group"></ul>
+        <div id="loadMoreContainer" class="text-center mt-3" style="display: none;">
+            <a href="#" id="loadMoreBtn" class="text-primary">Ver más</a>
+        </div>
+    </div>
+</div>
+
+<script src="/static/js/version_history.js"></script>
+{% endblock %}

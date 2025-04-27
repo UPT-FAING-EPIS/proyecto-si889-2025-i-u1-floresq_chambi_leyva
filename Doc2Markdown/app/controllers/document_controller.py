@@ -1,4 +1,4 @@
-from fastapi import APIRouter, UploadFile, File, Form, HTTPException, Depends
+from fastapi import APIRouter, UploadFile, File, Form, HTTPException, Depends, Query
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from fastapi.responses import FileResponse
 from typing import Optional
@@ -57,21 +57,36 @@ async def upload_document(
     if not markdown_content:
         raise HTTPException(status_code=500, detail="Error al convertir el documento")
     
+    # Buscar documentos existentes con el mismo título
+    existing_document = db.query(Document).filter(
+        Document.user_id == user_id,
+        Document.title == title
+    ).order_by(Document.version.desc()).first()
+    
+    # Determinar el número de versión
+    if existing_document:
+        # Si existe, incrementar la versión máxima
+        version_number = existing_document.version + 1
+    else:
+        # Si no existe, empezar con la versión 1
+        version_number = 1
+    
     # Guardar en base de datos
     new_document = Document(
         user_id=user_id,
         title=title,
         original_format=original_format,
-        markdown_content=markdown_content
+        markdown_content=markdown_content,
+        version=version_number  # Ahora es un número entero
     )
     db.add(new_document)
     db.commit()
     db.refresh(new_document)
     
-    # Crear versión inicial
+    # Crear versión en la tabla DocumentVersion
     new_version = DocumentVersion(
         document_id=new_document.document_id,
-        version_number=1,
+        version_number=version_number,
         content=markdown_content
     )
     db.add(new_version)
@@ -95,6 +110,7 @@ async def upload_document(
     return {
         "document_id": new_document.document_id,
         "title": new_document.title,
+        "version": new_document.version,
         "markdown_content": new_document.markdown_content
     }
 
@@ -136,8 +152,99 @@ async def list_user_documents(user_id: int = Depends(get_user_from_token), db: S
     
     # Formatear los documentos
     documents_data = [
-        {"document_id": doc.document_id, "title": doc.title, "original_format": doc.original_format}
+        {"document_id": doc.document_id, "title": doc.title, "original_format": doc.original_format, "version": doc.version}
         for doc in documents
     ]
     
     return {"documents": documents_data}
+
+@router.get("/versions/")
+async def get_document_versions(
+    title: str = Query(...),
+    page: int = Query(1),
+    limit: int = Query(10),
+    user_id: int = Depends(get_user_from_token),
+    db: Session = Depends(get_db)
+):
+    # Verificar usuario
+    user = db.query(User).filter(User.user_id == user_id).first()
+    if not user:
+        raise HTTPException(status_code=404, detail="Usuario no encontrado")
+    
+    # Buscar documentos que coincidan con el título
+    documents = db.query(Document).filter(
+        Document.user_id == user_id,
+        Document.title.like(f"%{title}%")
+    ).all()
+    
+    if not documents:
+        return {"versions": [], "has_more": False}
+    
+    # Obtener los IDs de los documentos
+    document_ids = [doc.document_id for doc in documents]
+    
+    # Consultar versiones de estos documentos
+    skip = (page - 1) * limit
+    versions_query = db.query(DocumentVersion).filter(
+        DocumentVersion.document_id.in_(document_ids)
+    ).order_by(DocumentVersion.created_at.desc())
+    
+    # Contar total de versiones para determinar si hay más
+    total_versions = versions_query.count()
+    
+    # Aplicar paginación
+    versions = versions_query.offset(skip).limit(limit + 1).all()
+    
+    # Determinar si hay más resultados
+    has_more = len(versions) > limit
+    if has_more:
+        versions = versions[:limit]  # Eliminar el elemento extra
+    
+    # Obtener información adicional de cada documento
+    result_versions = []
+    for version in versions:
+        doc = db.query(Document).filter(Document.document_id == version.document_id).first()
+        result_versions.append({
+            "version_id": version.version_id,
+            "document_id": version.document_id,
+            "title": doc.title,
+            "version_number": version.version_number,
+            "created_at": version.created_at
+        })
+    
+    return {"versions": result_versions, "has_more": has_more}
+
+@router.delete("/versions/{document_id}/{version_number}")
+async def delete_document_version(
+    document_id: int,
+    version_number: int,
+    user_id: int = Depends(get_user_from_token),
+    db: Session = Depends(get_db)
+):
+    # Verificar usuario
+    user = db.query(User).filter(User.user_id == user_id).first()
+    if not user:
+        raise HTTPException(status_code=404, detail="Usuario no encontrado")
+    
+    # Verificar que el documento existe y pertenece al usuario
+    document = db.query(Document).filter(
+        Document.document_id == document_id,
+        Document.version == version_number,
+        Document.user_id == user_id
+    ).first()
+    
+    if not document:
+        raise HTTPException(status_code=404, detail="Versión del documento no encontrada o no tienes permisos")
+    
+    # Primero eliminamos las versiones relacionadas en document_versions
+    db.query(DocumentVersion).filter(
+        DocumentVersion.document_id == document_id,
+        DocumentVersion.version_number == version_number
+    ).delete()
+    
+    # Luego eliminamos el documento
+    db.delete(document)
+    
+    db.commit()
+    
+    return {"message": "Versión eliminada correctamente"}

@@ -32,7 +32,7 @@ async function fetchDocuments() {
     const list = document.getElementById("documentList");
     list.innerHTML = ""; // Limpiar la lista antes de agregar nuevos documentos
 
-    const userId = 1; // O puedes obtenerlo dinámicamente, dependiendo de tu flujo de autenticación
+    const userId = 1; // Obtener el user_id adecuado
 
     try {
         const response = await fetch(`/api/documents/list/?user_id=${userId}`, {
@@ -55,7 +55,26 @@ async function fetchDocuments() {
                 documents.forEach(doc => {
                     const li = document.createElement("li");
                     li.className = "list-group-item";
-                    li.innerHTML = `<a href="/api/documents/download/${doc.document_id}" target="_blank">${doc.title}</a>`;
+                    
+                    // Crear el enlace sin subrayado
+                    const link = document.createElement("a");
+                    link.href = `/api/documents/download/${doc.document_id}`;
+                    link.target = "_blank";
+                    link.textContent = doc.title;
+                    link.style.textDecoration = "none"; // Elimina el subrayado
+                    link.style.color = "#0d6efd"; // Color negro
+                    link.style.fontWeight = "normal"; // Peso normal (o usa "bold" si prefieres negrita)
+                    
+                    // Crear el texto de versión
+                    const versionSpan = document.createElement("span");
+                    versionSpan.textContent = ` Version ${doc.version}`;
+                    versionSpan.style.marginLeft = "8px";
+                    versionSpan.style.color = "#666"; // Gris oscuro
+                    
+                    // Agregar ambos elementos al li
+                    li.appendChild(link);
+                    li.appendChild(versionSpan);
+                    
                     list.appendChild(li);
                 });
             }
@@ -67,4 +86,3 @@ async function fetchDocuments() {
         alert("Ocurrió un error al obtener los documentos.");
     }
 }
-

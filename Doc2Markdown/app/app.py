@@ -66,3 +66,7 @@ async def document_conversion_page(request: Request):
 @app.get("/api", response_class=HTMLResponse)
 async def api_home(request: Request):
     return RedirectResponse(url="/")
+
+@app.get("/version_history", response_class=HTMLResponse)
+async def version_history_page(request: Request):
+    return templates.TemplateResponse("version_history.html", {"request": request})
