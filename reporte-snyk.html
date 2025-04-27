@@ -543,7 +543,7 @@
           </svg>
         </a>
         <div class="test-meta">
-          <p class="timestamp">April 27th 2025, 11:27:10 pm (UTC+00:00)</p>
+          <p class="timestamp">April 27th 2025, 11:43:47 pm (UTC+00:00)</p>
           <div class="filepath" title="/home/runner/work/proyecto-si889-2025-i-u1-floresq_chambi_leyva/proyecto-si889-2025-i-u1-floresq_chambi_leyva">Source: /home/runner/work/proyecto-si889-2025-i-u1-floresq_chambi_leyva/proyecto-si889-2025-i-u1-floresq_chambi_leyva</div>
         </div>
       </div>
@@ -559,7 +559,7 @@
               <span class="severity-icon severity-icon--high"></span> <span><strong>0</strong> high issues</span>
             </div>
             <div class="meta-count">
-              <span class="severity-icon severity-icon--medium"></span> <span><strong>1</strong> medium issues</span>
+              <span class="severity-icon severity-icon--medium"></span> <span><strong>0</strong> medium issues</span>
             </div>
             <div class="meta-count">
               <span class="severity-icon severity-icon--low"></span> <span><strong>0</strong> low issues</span>
@@ -569,224 +569,10 @@
         <div class="source-panel">
           <span class="source-panel__heading">Scan Coverage</span>
           <ul class="scan-coverage">
-            <li class="type">HTML files: <strong>1</strong></li><li class="type">JavaScript files: <strong>3</strong></li><li class="type">Python files: <strong>14</strong></li><li class="type">HTML files: <strong>4</strong></li>
+            <li class="type">HTML files: <strong>1</strong></li><li class="type">JavaScript files: <strong>4</strong></li><li class="type">Python files: <strong>14</strong></li><li class="type">HTML files: <strong>5</strong></li>
           </ul>            
         </div>
       </div>
-        <div class="cards--vuln filter--patch filter--ignore">
-          <div class="card card--vuln  disclosure--not-new severity--medium" data-snyk-test="medium">
-              <input type="radio" name="tab-view-0" id="tab-dataflow-0" value="dataflow" class="card__tab__radio" checked>
-              <input type="radio" name="tab-view-0" id="tab-fix-0" value="fix" class="card__tab__radio" >
-          
-              <header class="card__header">
-                  <div class="card__header__main">
-                      <div class="severity-icon severity-icon--medium"></div>
-                      <h2 class="card__title">Cross-site Scripting (XSS)</h2>
-                      <div class="card__actions">
-                          <label for="tab-dataflow-0" class="card__action">Data Flow</label>
-                          <label for="tab-fix-0" class="card__action">Fix Analysis</label>
-                      </div>
-                  </div>
-                  <ul class="card__meta">
-                      <li class="card__meta__item">SNYK-CODE</li>
-                      <li class="card__meta__item">CWE-79</li>
-                      <li class="card__meta__item">DOMXSS</li>
-                  </ul>
-              </header>
-              <div class="card__section">
-                  <div class="card__summary severity--medium">
-                      <p>Unsanitized input from data from a remote resource flows into innerHTML, where it is used to dynamically construct the HTML page on client side. This may result in a DOM Based Cross-Site Scripting attack (DOMXSS).</p>
-                      <div class="file-location">Found in: <strong>Doc2Markdown/app/static/js/document.js (line : 58)</strong></div>    
-                  </div>
-                  <div class="card__panel dataflow">
-                      <h2 class="card__panel__heading"><span class="heading-char">⇣</span> Data Flow</h2>
-                      <div class="dataflow__filename"> Doc2Markdown/app/static/js/document.js</div>
-                      <div class="dataflow__item">
-                          <span class="dataflow__lineno" title="line:column">38:32</span>
-                          <div class="dataflow__code"><span class="dataflow__codeprefix">        const response &#x3D; await <br /></span><span class="marker">fetch(</span><span class="dataflow__codesuffix">&#x60;/api/documents/list/?user_id&#x3D;${userId}&#x60;, {</span></div>
-                          <span class="dataflow__badge" title="Data is 'tainted' if it comes from an insecure source such as a file, the network, or the user. This tainted data is passed to a sensitive sink, as described below.">Source</span>
-                          <span class="dataflow__step">0</span>
-                      </div>
-                      
-                      <div class="dataflow__item">
-                          <span class="dataflow__lineno" title="line:column">38:32</span>
-                          <div class="dataflow__code"><span class="dataflow__codeprefix">        const response &#x3D; await <br /></span><span class="marker">fetch(</span><span class="dataflow__codesuffix">&#x60;/api/documents/list/?user_id&#x3D;${userId}&#x60;, {</span></div>
-                          
-                          <span class="dataflow__step">1</span>
-                      </div>
-                      
-                      <div class="dataflow__item">
-                          <span class="dataflow__lineno" title="line:column">38:26</span>
-                          <div class="dataflow__code"><span class="dataflow__codeprefix">        const response &#x3D; <br /></span><span class="marker block">await fetch(&#x60;/api/documents/list/?user_id&#x3D;${userId}&#x60;, {
-                      method: &quot;GET&quot;,
-                      headers: { 
-                          &quot;Authorization&quot;: &#x60;Bearer ${localStorage.getItem(&quot;access_token&quot;)}&#x60; 
-                      }
-                  });</span><span class="dataflow__codesuffix"></span></div>
-                          
-                          <span class="dataflow__step">2</span>
-                      </div>
-                      
-                      <div class="dataflow__item">
-                          <span class="dataflow__lineno" title="line:column">38:15</span>
-                          <div class="dataflow__code"><span class="dataflow__codeprefix">        const <br /></span><span class="marker">response </span><span class="dataflow__codesuffix">&#x3D; await fetch(&#x60;/api/documents/list/?user_id&#x3D;${userId}&#x60;, {</span></div>
-                          
-                          <span class="dataflow__step">3</span>
-                      </div>
-                      
-                      <div class="dataflow__item">
-                          <span class="dataflow__lineno" title="line:column">46:32</span>
-                          <div class="dataflow__code"><span class="dataflow__codeprefix">            const data &#x3D; await <br /></span><span class="marker">response.</span><span class="dataflow__codesuffix">json();</span></div>
-                          
-                          <span class="dataflow__step">4</span>
-                      </div>
-                      
-                      <div class="dataflow__item">
-                          <span class="dataflow__lineno" title="line:column">46:41</span>
-                          <div class="dataflow__code"><span class="dataflow__codeprefix">            const data &#x3D; await response.<br /></span><span class="marker">json(</span><span class="dataflow__codesuffix">);</span></div>
-                          
-                          <span class="dataflow__step">5</span>
-                      </div>
-                      
-                      <div class="dataflow__item">
-                          <span class="dataflow__lineno" title="line:column">46:32</span>
-                          <div class="dataflow__code"><span class="dataflow__codeprefix">            const data &#x3D; await <br /></span><span class="marker">response.json(</span><span class="dataflow__codesuffix">);</span></div>
-                          
-                          <span class="dataflow__step">6</span>
-                      </div>
-                      
-                      <div class="dataflow__item">
-                          <span class="dataflow__lineno" title="line:column">46:26</span>
-                          <div class="dataflow__code"><span class="dataflow__codeprefix">            const data &#x3D; <br /></span><span class="marker">await response.json();</span><span class="dataflow__codesuffix"></span></div>
-                          
-                          <span class="dataflow__step">7</span>
-                      </div>
-                      
-                      <div class="dataflow__item">
-                          <span class="dataflow__lineno" title="line:column">46:19</span>
-                          <div class="dataflow__code"><span class="dataflow__codeprefix">            const <br /></span><span class="marker">data </span><span class="dataflow__codesuffix">&#x3D; await response.json();</span></div>
-                          
-                          <span class="dataflow__step">8</span>
-                      </div>
-                      
-                      <div class="dataflow__item">
-                          <span class="dataflow__lineno" title="line:column">47:31</span>
-                          <div class="dataflow__code"><span class="dataflow__codeprefix">            const documents &#x3D; <br /></span><span class="marker">data.</span><span class="dataflow__codesuffix">documents;</span></div>
-                          
-                          <span class="dataflow__step">9</span>
-                      </div>
-                      
-                      <div class="dataflow__item">
-                          <span class="dataflow__lineno" title="line:column">47:36</span>
-                          <div class="dataflow__code"><span class="dataflow__codeprefix">            const documents &#x3D; data.<br /></span><span class="marker">documents;</span><span class="dataflow__codesuffix"></span></div>
-                          
-                          <span class="dataflow__step">10</span>
-                      </div>
-                      
-                      <div class="dataflow__item">
-                          <span class="dataflow__lineno" title="line:column">55:35</span>
-                          <div class="dataflow__code"><span class="dataflow__codeprefix">                documents.forEach(<br /></span><span class="marker">doc </span><span class="dataflow__codesuffix">&#x3D;&gt; {</span></div>
-                          
-                          <span class="dataflow__step">11</span>
-                      </div>
-                      
-                      <div class="dataflow__item">
-                          <span class="dataflow__lineno" title="line:column">58:72</span>
-                          <div class="dataflow__code"><span class="dataflow__codeprefix">                    li.innerHTML &#x3D; &#x60;&lt;a href&#x3D;&quot;/api/documents/download/${<br /></span><span class="marker">doc.</span><span class="dataflow__codesuffix">document_id}&quot; target&#x3D;&quot;_blank&quot;&gt;${doc.title}&lt;/a&gt;&#x60;;</span></div>
-                          
-                          <span class="dataflow__step">12</span>
-                      </div>
-                      
-                      <div class="dataflow__item">
-                          <span class="dataflow__lineno" title="line:column">58:76</span>
-                          <div class="dataflow__code"><span class="dataflow__codeprefix">                    li.innerHTML &#x3D; &#x60;&lt;a href&#x3D;&quot;/api/documents/download/${doc.<br /></span><span class="marker">document_id}</span><span class="dataflow__codesuffix">&quot; target&#x3D;&quot;_blank&quot;&gt;${doc.title}&lt;/a&gt;&#x60;;</span></div>
-                          
-                          <span class="dataflow__step">13</span>
-                      </div>
-                      
-                      <div class="dataflow__item">
-                          <span class="dataflow__lineno" title="line:column">58:72</span>
-                          <div class="dataflow__code"><span class="dataflow__codeprefix">                    li.innerHTML &#x3D; &#x60;&lt;a href&#x3D;&quot;/api/documents/download/${<br /></span><span class="marker">doc.document_id}</span><span class="dataflow__codesuffix">&quot; target&#x3D;&quot;_blank&quot;&gt;${doc.title}&lt;/a&gt;&#x60;;</span></div>
-                          
-                          <span class="dataflow__step">14</span>
-                      </div>
-                      
-                      <div class="dataflow__item">
-                          <span class="dataflow__lineno" title="line:column">58:36</span>
-                          <div class="dataflow__code"><span class="dataflow__codeprefix">                    li.innerHTML &#x3D; <br /></span><span class="marker">&#x60;&lt;a href&#x3D;&quot;/api/documents/download/${doc.document_id}&quot; target&#x3D;&quot;_blank&quot;&gt;${doc.title}&lt;/a&gt;&#x60;;</span><span class="dataflow__codesuffix"></span></div>
-                          
-                          <span class="dataflow__step">15</span>
-                      </div>
-                      
-                      <div class="dataflow__item">
-                          <span class="dataflow__lineno" title="line:column">58:36</span>
-                          <div class="dataflow__code"><span class="dataflow__codeprefix">                    li.innerHTML &#x3D; <br /></span><span class="marker">&#x60;&lt;a href&#x3D;&quot;/api/documents/download/${doc.document_id}&quot; target&#x3D;&quot;_blank&quot;&gt;${doc.title}&lt;/a&gt;&#x60;;</span><span class="dataflow__codesuffix"></span></div>
-                          <span class="dataflow__badge" title="Sinks are the operations that must receive clean data and that you wouldn't want an attacker to be able to manipulate.">Sink</span>
-                          <span class="dataflow__step">16</span>
-                      </div>
-                  </div>
-                  <div class="card__panel fix-analysis">
-                      <h2 class="card__panel__heading"><span class="heading-char">✓</span> Fix Analysis</h2>
-                      <div class="card__panel__markdown"><h2 id="details">Details</h2>
-          <p>A cross-site scripting attack occurs when the attacker tricks a legitimate web-based application or site to accept a request as originating from a trusted source.</p>
-          <p>This is done by escaping the context of the web application; the web application then delivers that data to its users along with other trusted dynamic content, without validating it. The browser unknowingly executes malicious script on the client side (through client-side languages; usually JavaScript or HTML)  in order to perform actions that are otherwise typically blocked by the browser&#39;s Same Origin Policy.</p>
-          <p>Injecting malicious code is the most prevalent manner by which XSS is exploited; for this reason, escaping characters in order to prevent this manipulation is the top method for securing code against this vulnerability.</p>
-          <p>Escaping means that the application is coded to mark key characters, and particularly key characters included in user input, to prevent those characters from being interpreted in a dangerous context. For example, in HTML, <code>&lt;</code> can be coded as  <code>&amp;lt</code>; and <code>&gt;</code> can be coded as <code>&amp;gt</code>; in order to be interpreted and displayed as themselves in text, while within the code itself, they are used for HTML tags. If malicious content is injected into an application that escapes special characters and that malicious content uses <code>&lt;</code> and <code>&gt;</code> as HTML tags, those characters are nonetheless not interpreted as HTML tags by the browser if they&#39;ve been correctly escaped in the application code and in this way the attempted attack is diverted.</p>
-          <p>The most prominent use of XSS is to steal cookies (source: OWASP HttpOnly) and hijack user sessions, but XSS exploits have been used to expose sensitive information, enable access to privileged services and functionality and deliver malware.</p>
-          <h3 id="types-of-attacks">Types of attacks</h3>
-          <p>There are a few methods by which XSS can be manipulated:</p>
-          <table>
-          <thead>
-          <tr>
-          <th>Type</th>
-          <th>Origin</th>
-          <th>Description</th>
-          </tr>
-          </thead>
-          <tbody><tr>
-          <td><strong>Stored</strong></td>
-          <td>Server</td>
-          <td>The malicious code is inserted in the application (usually as a link) by the attacker. The code is activated every time a user clicks the link.</td>
-          </tr>
-          <tr>
-          <td><strong>Reflected</strong></td>
-          <td>Server</td>
-          <td>The attacker delivers a malicious link externally from the vulnerable web site application to a user. When clicked, malicious code is sent to the vulnerable web site, which reflects the attack back to the user&#39;s browser.</td>
-          </tr>
-          <tr>
-          <td><strong>DOM-based</strong></td>
-          <td>Client</td>
-          <td>The attacker forces the user&#39;s browser to render a malicious page. The data in the page itself delivers the cross-site scripting data.</td>
-          </tr>
-          <tr>
-          <td><strong>Mutated</strong></td>
-          <td></td>
-          <td>The attacker injects code that appears safe, but is then rewritten and modified by the browser, while parsing the markup. An example is rebalancing unclosed quotation marks or even adding quotation marks to unquoted parameters.</td>
-          </tr>
-          </tbody></table>
-          <h3 id="affected-environments">Affected environments</h3>
-          <p>The following environments are susceptible to an XSS attack:</p>
-          <ul>
-          <li>Web servers</li>
-          <li>Application servers</li>
-          <li>Web application environments</li>
-          </ul>
-          <h2 id="best-practices-for-prevention">Best practices for prevention</h2>
-          <p>This section describes the top best practices designed to specifically protect your code:</p>
-          <ul>
-          <li>Sanitize data input in an HTTP request before reflecting it back, ensuring all data is validated, filtered or escaped before echoing anything back to the user, such as the values of query parameters during searches.</li>
-          <li>Convert special characters such as <code>?</code>, <code>&amp;</code>, <code>/</code>, <code>&lt;</code>, <code>&gt;</code> and spaces to their respective HTML or URL encoded equivalents.</li>
-          <li>Give users the option to disable client-side scripts.</li>
-          <li>Redirect invalid requests.</li>
-          <li>Detect simultaneous logins, including those from two separate IP addresses, and invalidate those sessions.</li>
-          <li>Use and enforce a Content Security Policy (source: Wikipedia) to disable any features that might be manipulated for an XSS attack.</li>
-          <li>Read the documentation for any of the libraries referenced in your code to understand which elements allow for embedded HTML.</li>
-          </ul>
-          </div>
-                  </div>
-              </div>
-          </div>
-        </div>
     </div>
   </main>
 </body>
