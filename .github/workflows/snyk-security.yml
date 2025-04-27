@@ -20,7 +20,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-            pip install -r requirements.txt  # Ruta corregida a la raíz
+            pip install -r Doc2Markdown/requirements.txt  # Ruta ajustada a 'Doc2Markdown/requirements.txt'
 
       - name: Install Snyk
         run: npm install -g snyk
@@ -29,10 +29,10 @@ jobs:
         run: snyk auth ${{ secrets.SNYK_TOKEN }}
 
       - name: Run Snyk test
-        run: snyk test --file=requirements.txt  # Ruta al archivo en la raíz
+        run: snyk test --file=Doc2Markdown/requirements.txt 
 
       - name: Monitor project with Snyk
-        run: snyk monitor --file=requirements.txt  # Ruta al archivo en la raíz
+        run: snyk monitor --file=Doc2Markdown/requirements.txt
 
       - name: Install Snyk-to-HTML
         run: npm install -g snyk-to-html
@@ -59,7 +59,7 @@ jobs:
       - name: Snyk Open Source monitor
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-        run: snyk monitor --file=requirements.txt  # Ruta ajustada
+        run: snyk monitor --file=Doc2Markdown/requirements.txt  
 
       - name: Upload result to GitHub Code Scanning
         uses: github/codeql-action/upload-sarif@v3
