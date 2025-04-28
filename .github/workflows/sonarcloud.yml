@@ -15,50 +15,11 @@ jobs:
       - name: Set PYTHONPATH
         run: echo "PYTHONPATH=$(pwd)/Doc2Markdown" >> $GITHUB_ENV  
 
-      - name: Install database drivers and dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y build-essential unixodbc-dev python3-pip gnupg
-
-          # Configurar repositorio Microsoft
-          curl -sSL https://packages.microsoft.com/keys/microsoft.asc | sudo gpg --batch --no-tty --dearmor -o /usr/share/keyrings/microsoft-prod.gpg
-          echo "deb [arch=amd64 signed-by=/usr/share/keyrings/microsoft-prod.gpg] https://packages.microsoft.com/ubuntu/24.04/prod noble main" | sudo tee /etc/apt/sources.list.d/microsoft-prod.list
-
-          sudo apt-get update
-          sudo ACCEPT_EULA=Y apt-get install -y msodbcsql17
-
-      - name: Install database drivers
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y unixodbc-dev
-          
-          # Microsoft ODBC Driver
-          curl -sSL https://packages.microsoft.com/keys/microsoft.asc | sudo gpg --batch --dearmor -o /usr/share/keyrings/microsoft-prod.gpg
-          echo "deb [arch=amd64 signed-by=/usr/share/keyrings/microsoft-prod.gpg] https://packages.microsoft.com/ubuntu/24.04/prod noble main" | sudo tee /etc/apt/sources.list.d/microsoft-prod.list
-          
-          sudo apt-get update
-          sudo ACCEPT_EULA=Y apt-get install -y msodbcsql17
-
       - name: Install Java 17
         run: |
           sudo apt update
           sudo apt install -y openjdk-17-jdk
           java -version
-
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.x'
-
-      - name: Install Python dependencies from requirements.txt
-        run: |
-          python3 -m pip install --upgrade pip
-          pip install -r Doc2Markdown/requirements.txt  # Instalar dependencias desde requirements.txt
-
-      - name: Run Pytest with coverage
-        run: |
-          pytest --cov=Doc2Markdown/app --cov-report=xml:report_coverage/coverage.xml  # Generar reporte XML
-          pytest --cov=Doc2Markdown/app --cov-report=html:report_coverage/htmlcov  # Generar reporte HTML
 
       - name: Install SonarScanner
         run: |
@@ -77,31 +38,19 @@ jobs:
             -Dsonar.organization=jaimeflores \
             -Dsonar.host.url=https://sonarcloud.io \
             -Dsonar.login=${{ secrets.SONAR_TOKEN }} \
-            -Dsonar.python.coverage.reportPaths=report_coverage/coverage.xml  # Especificar el reporte XML para SonarCloud
-
-      - name: Create Reports folder
-        run: |
-          mkdir -p Doc2Markdown/app/Reportes  # Crear la carpeta 'Reportes' dentro de 'app'
-
-      - name: Copy Coverage Report to Reports folder
-        run: |
-          cp -r report_coverage Doc2Markdown/app/Reportes  # Copiar el reporte de cobertura a la carpeta 'Reportes'
+            -Dsonar.python.coverage.reportPaths=report_coverage/coverage.xml  # Usar el reporte XML generado localmente
 
       - name: Configure Git for GitHub Pages
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
 
-      - name: Commit local changes
-        run: |
-          git add .  # Agregar todos los archivos
-          git commit -m "Saving analysis and test reports" || echo "No changes to commit"
-
       - name: Publish report to GitHub Pages
         run: |
           git fetch origin gh-pages
           git checkout gh-pages
-          cp -r Doc2Markdown/app/Reportes ./htmlcov  # Copiar los reportes generados
+          # Copiar los reportes generados localmente desde el repositorio
+          cp -r Doc2Markdown/report_coverage ./htmlcov
           git add htmlcov
           git commit -m "Publishing SonarCloud and pytest reports"
           git push origin gh-pages
