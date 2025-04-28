@@ -60,20 +60,22 @@ jobs:
             exit 1
           fi
 
-      # Publish coverage report directly to gh-pages
+      # Copiar htmlcov a un lugar temporal antes de cambiar de rama
+      - name: Backup htmlcov folder
+        run: |
+          mkdir backup_htmlcov
+          cp -r Doc2Markdown/report_coverage/htmlcov/* backup_htmlcov/
+
+      # Cambiar a gh-pages
       - name: Publish report to GitHub Pages
         run: |
-          # Fetch gh-pages branch
           git fetch origin gh-pages
           git checkout gh-pages
-          
-          # Ensure the directory htmlcov exists in gh-pages
+
+          # Ahora traemos los archivos que habíamos respaldado
           mkdir -p htmlcov
-          
-          # Copy the coverage report from report_coverage/htmlcov to gh-pages htmlcov
-          cp -r Doc2Markdown/report_coverage/htmlcov/* htmlcov/
-          
-          # Commit the changes
+          cp -r ../backup_htmlcov/* htmlcov/
+
           git add htmlcov
           git commit -m "Publishing SonarCloud coverage report"
           git push origin gh-pages
