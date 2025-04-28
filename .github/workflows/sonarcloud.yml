@@ -31,10 +31,10 @@ jobs:
         with:
           python-version: '3.x'
 
-      - name: Install Python dependencies
+      - name: Install Python dependencies from requirements.txt
         run: |
           python3 -m pip install --upgrade pip
-          pip install pytest pytest-cov sqlalchemy python-dotenv bcrypt pyodbc  # Añadir dotenv y bcrypt
+          pip install -r Doc2Markdown/requirements.txt  # Instalar dependencias desde requirements.txt
 
       - name: Run Pytest with coverage
         run: |
