@@ -3,9 +3,6 @@ on:
   push:
     branches:
       - main
-  pull_request:
-    branches:
-      - main
 
 jobs:
   sonarcloud-analysis:
@@ -14,6 +11,9 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+
+      - name: Set PYTHONPATH
+        run: echo "PYTHONPATH=$(pwd)/Doc2Markdown" >> $GITHUB_ENV  
 
       - name: Install build dependencies
         run: |
