@@ -10,7 +10,7 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Set PYTHONPATH
         run: echo "PYTHONPATH=$(pwd)/Doc2Markdown" >> $GITHUB_ENV  
@@ -20,12 +20,10 @@ jobs:
           sudo apt-get update
           sudo apt install -y build-essential unixodbc-dev python3-pip
 
-          # Agregar el repositorio de Microsoft para ODBC
-          curl https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key add -
-          sudo add-apt-repository "$(curl https://packages.microsoft.com/config/ubuntu/24.04/prod.list)"
+          # Método moderno para agregar repositorio Microsoft
+          curl -sSL https://packages.microsoft.com/keys/microsoft.asc | sudo gpg --dearmor -o /usr/share/keyrings/microsoft.gpg
+          echo "deb [arch=amd64 signed-by=/usr/share/keyrings/microsoft.gpg] https://packages.microsoft.com/ubuntu/24.04/prod noble main" | sudo tee /etc/apt/sources.list.d/microsoft-prod.list
           sudo apt-get update
-
-          # Ahora instalar msodbcsql17
           sudo apt install -y msodbcsql17
 
       - name: Install Java 17
