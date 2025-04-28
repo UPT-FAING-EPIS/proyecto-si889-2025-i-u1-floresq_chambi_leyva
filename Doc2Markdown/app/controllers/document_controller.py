@@ -8,8 +8,6 @@ from jose import JWTError, jwt
 from datetime import datetime
 from sqlalchemy.orm import Session
 from app.models.document_model import Document
-from app.models.document_version_model import DocumentVersion
-from app.models.conversion_log_model import ConversionLog
 from app.models.user_model import User
 from app.utils.document_converter import DocumentConverter
 from app.utils.file_handler import FileHandler
@@ -83,23 +81,6 @@ async def upload_document(
     db.commit()
     db.refresh(new_document)
     
-    # Crear versión en la tabla DocumentVersion
-    new_version = DocumentVersion(
-        document_id=new_document.document_id,
-        version_number=version_number,
-        content=markdown_content
-    )
-    db.add(new_version)
-    
-    # Registrar log de conversión
-    new_log = ConversionLog(
-        document_id=new_document.document_id,
-        status="SUCCESS",
-        conversion_type=f"{original_format.upper()} to MD"
-    )
-    db.add(new_log)
-    
-    db.commit()
     
     # Generar archivos de navegación
     documents = db.query(Document).filter(Document.user_id == user_id).all()
@@ -180,35 +161,34 @@ async def get_document_versions(
     if not documents:
         return {"versions": [], "has_more": False}
     
-    # Obtener los IDs de los documentos
+    # Obtener los IDs de los documentos (igual que antes)
     document_ids = [doc.document_id for doc in documents]
     
-    # Consultar versiones de estos documentos
+    # Consultar versiones usando solo Document (cambia esta parte)
     skip = (page - 1) * limit
-    versions_query = db.query(DocumentVersion).filter(
-        DocumentVersion.document_id.in_(document_ids)
-    ).order_by(DocumentVersion.created_at.desc())
+    versions_query = db.query(Document).filter(
+        Document.document_id.in_(document_ids)
+    ).order_by(Document.created_at.desc())
     
     # Contar total de versiones para determinar si hay más
     total_versions = versions_query.count()
     
-    # Aplicar paginación
+    # Aplicar paginación (igual que antes)
     versions = versions_query.offset(skip).limit(limit + 1).all()
     
-    # Determinar si hay más resultados
+    # Determinar si hay más resultados (igual que antes)
     has_more = len(versions) > limit
     if has_more:
-        versions = versions[:limit]  # Eliminar el elemento extra
+        versions = versions[:limit]
     
-    # Obtener información adicional de cada documento
+    # Obtener información (adaptado para usar Document directamente)
     result_versions = []
     for version in versions:
-        doc = db.query(Document).filter(Document.document_id == version.document_id).first()
         result_versions.append({
-            "version_id": version.version_id,
+            "version_id": version.document_id,  # Usamos document_id como version_id
             "document_id": version.document_id,
-            "title": doc.title,
-            "version_number": version.version_number,
+            "title": version.title,
+            "version_number": version.version,  # Usamos version en lugar de version_number
             "created_at": version.created_at
         })
     
@@ -226,7 +206,7 @@ async def delete_document_version(
     if not user:
         raise HTTPException(status_code=404, detail="Usuario no encontrado")
     
-    # Verificar que el documento existe y pertenece al usuario
+    # Buscar y verificar el documento
     document = db.query(Document).filter(
         Document.document_id == document_id,
         Document.version == version_number,
@@ -234,17 +214,17 @@ async def delete_document_version(
     ).first()
     
     if not document:
-        raise HTTPException(status_code=404, detail="Versión del documento no encontrada o no tienes permisos")
+        raise HTTPException(
+            status_code=404,
+            detail="Versión del documento no encontrada o no tienes permisos"
+        )
     
-    # Primero eliminamos las versiones relacionadas en document_versions
-    db.query(DocumentVersion).filter(
-        DocumentVersion.document_id == document_id,
-        DocumentVersion.version_number == version_number
-    ).delete()
-    
-    # Luego eliminamos el documento
+    # Eliminar el documento directamente (ya no hay restricciones)
     db.delete(document)
-    
     db.commit()
     
-    return {"message": "Versión eliminada correctamente"}
+    return {
+        "message": "Versión eliminada correctamente",
+        "document_id": document_id,
+        "version": version_number
+    }

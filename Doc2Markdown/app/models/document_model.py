@@ -17,8 +17,6 @@ class Document(Base):
 
     # Relaciones
     user = relationship("User", back_populates="documents")
-    versions = relationship("DocumentVersion", back_populates="document")
-    conversion_logs = relationship("ConversionLog", back_populates="document")
 
     def __repr__(self):
         return f"<Document(title='{self.title}', format='{self.original_format}')>"
