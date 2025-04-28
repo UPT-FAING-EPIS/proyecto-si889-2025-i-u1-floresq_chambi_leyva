@@ -50,7 +50,7 @@ jobs:
             -Dsonar.python.coverage.reportPaths=report_coverage/coverage.xml \
             -Dsonar.branch.name=master
 
-      # Check if htmlcov exists
+       # Check if htmlcov exists
       - name: Check if htmlcov exists
         run: |
           if [ -d "Doc2Markdown/report_coverage/htmlcov" ]; then
@@ -60,38 +60,20 @@ jobs:
             exit 1
           fi
 
-      # Create Reportes directory and move htmlcov
-      - name: Create Reportes directory and move htmlcov
-        run: |
-          mkdir -p Doc2Markdown/Reportes
-          mv Doc2Markdown/report_coverage/htmlcov/* Doc2Markdown/Reportes/
-
-      # Remove .gitignore from htmlcov
-      - name: Remove .gitignore from htmlcov
-        run: |
-          if [ -f "Doc2Markdown/Reportes/.gitignore" ]; then
-            rm -f Doc2Markdown/Reportes/.gitignore
-          fi
-
-      # Configure Git for GitHub Pages
-      - name: Configure Git for GitHub Pages
-        run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-
-      # Commit local changes
-      - name: Commit local changes
-        run: |
-          git add . 
-          git commit -m "Saving analysis reports" || echo "No changes to commit"
-
-      # Publish report to GitHub Pages
+      # Publish coverage report directly to gh-pages
       - name: Publish report to GitHub Pages
         run: |
+          # Fetch gh-pages branch
           git fetch origin gh-pages
           git checkout gh-pages
+          
+          # Ensure the directory htmlcov exists in gh-pages
           mkdir -p htmlcov
-          cp -r Doc2Markdown/Reportes/* htmlcov/
+          
+          # Copy the coverage report from report_coverage/htmlcov to gh-pages htmlcov
+          cp -r Doc2Markdown/report_coverage/htmlcov/* htmlcov/
+          
+          # Commit the changes
           git add htmlcov
           git commit -m "Publishing SonarCloud coverage report"
           git push origin gh-pages
