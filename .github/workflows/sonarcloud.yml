@@ -34,7 +34,7 @@ jobs:
       - name: Install Python dependencies
         run: |
           python3 -m pip install --upgrade pip
-          pip install pytest pytest-cov sqlalchemy python-dotenv bcrypt  # Añadir dotenv y bcrypt
+          pip install pytest pytest-cov sqlalchemy python-dotenv bcrypt pyodbc  # Añadir dotenv y bcrypt
 
       - name: Run Pytest with coverage
         run: |
