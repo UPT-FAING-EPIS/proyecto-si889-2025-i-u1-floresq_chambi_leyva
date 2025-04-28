@@ -15,16 +15,17 @@ jobs:
       - name: Set PYTHONPATH
         run: echo "PYTHONPATH=$(pwd)/Doc2Markdown" >> $GITHUB_ENV  
 
-      - name: Install build dependencies
+      - name: Install ODBC dependencies
         run: |
           sudo apt-get update
-          sudo apt install -y build-essential unixodbc-dev python3-pip
+          sudo apt-get install -y build-essential unixodbc-dev python3-pip
 
-          # Método moderno para agregar repositorio Microsoft
-          curl -sSL https://packages.microsoft.com/keys/microsoft.asc | sudo gpg --dearmor -o /usr/share/keyrings/microsoft.gpg
-          echo "deb [arch=amd64 signed-by=/usr/share/keyrings/microsoft.gpg] https://packages.microsoft.com/ubuntu/24.04/prod noble main" | sudo tee /etc/apt/sources.list.d/microsoft-prod.list
+          # Configurar el repositorio de Microsoft ODBC correctamente
+          curl -sSL https://packages.microsoft.com/keys/microsoft.asc | sudo gpg --dearmor -o /usr/share/keyrings/microsoft-prod.gpg
+          echo "deb [arch=amd64 signed-by=/usr/share/keyrings/microsoft-prod.gpg] https://packages.microsoft.com/ubuntu/24.04/prod noble main" | sudo tee /etc/apt/sources.list.d/microsoft-prod.list
+
           sudo apt-get update
-          sudo apt install -y msodbcsql17
+          sudo ACCEPT_EULA=Y apt-get install -y msodbcsql17
 
       - name: Install Java 17
         run: |
