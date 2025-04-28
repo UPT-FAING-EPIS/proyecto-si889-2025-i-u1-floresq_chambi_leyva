@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - main
+      - master
 
 jobs:
   sonarcloud-analysis:
@@ -11,9 +12,11 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Set PYTHONPATH
-        run: echo "PYTHONPATH=$(pwd)/Doc2Markdown" >> $GITHUB_ENV  
+        run: echo "PYTHONPATH=$(pwd)/Doc2Markdown" >> $GITHUB_ENV
 
       - name: Install Java 17
         run: |
@@ -28,18 +31,36 @@ jobs:
           sudo ln -s /opt/sonar-scanner-6.2.1.4610-linux-x64/bin/sonar-scanner /usr/local/bin/sonar-scanner
           sonar-scanner --version
 
-      - name: Run SonarCloud Analysis
+      # Publicación específica para master
+      - name: Run SonarCloud Analysis (Master Branch)
+        if: github.ref == 'refs/heads/master'
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
-          cd Doc2Markdown/app  # Cambio aquí para que entre en la carpeta 'app' dentro de Doc2Markdown
+          cd Doc2Markdown/app
           sonar-scanner \
             -Dsonar.projectKey=jaimeflores_doc2markdown \
             -Dsonar.organization=jaimeflores \
             -Dsonar.host.url=https://sonarcloud.io \
             -Dsonar.login=${{ secrets.SONAR_TOKEN }} \
-            -Dsonar.python.coverage.reportPaths=report_coverage/coverage.xml  # Usar el reporte XML generado localmente
+            -Dsonar.python.coverage.reportPaths=report_coverage/coverage.xml \
+            -Dsonar.branch.name=master
 
+      # Análisis normal para main
+      - name: Run SonarCloud Analysis (Main Branch)
+        if: github.ref == 'refs/heads/main'
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: |
+          cd Doc2Markdown/app
+          sonar-scanner \
+            -Dsonar.projectKey=jaimeflores_doc2markdown \
+            -Dsonar.organization=jaimeflores \
+            -Dsonar.host.url=https://sonarcloud.io \
+            -Dsonar.login=${{ secrets.SONAR_TOKEN }} \
+            -Dsonar.python.coverage.reportPaths=report_coverage/coverage.xml
+
+      # Configuración común para GitHub Pages
       - name: Configure Git for GitHub Pages
         run: |
           git config --global user.name "github-actions[bot]"
@@ -47,14 +68,10 @@ jobs:
 
       - name: Publish report to GitHub Pages
         run: |
-          # Ensure we have the gh-pages branch
           git fetch origin gh-pages
           git checkout gh-pages
-          
-          # Create the htmlcov directory if it doesn't exist
           mkdir -p htmlcov
           
-          # Copy the coverage reports from the correct location
           if [ -d "Doc2Markdown/report_coverage" ]; then
             cp -r Doc2Markdown/report_coverage/* htmlcov/
           elif [ -d "report_coverage" ]; then
