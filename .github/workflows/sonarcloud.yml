@@ -47,10 +47,23 @@ jobs:
 
       - name: Publish report to GitHub Pages
         run: |
+          # Ensure we have the gh-pages branch
           git fetch origin gh-pages
           git checkout gh-pages
-          # Copiar los reportes generados localmente desde el repositorio
-          cp -r Doc2Markdown/report_coverage ./htmlcov
+          
+          # Create the htmlcov directory if it doesn't exist
+          mkdir -p htmlcov
+          
+          # Copy the coverage reports from the correct location
+          if [ -d "Doc2Markdown/report_coverage" ]; then
+            cp -r Doc2Markdown/report_coverage/* htmlcov/
+          elif [ -d "report_coverage" ]; then
+            cp -r report_coverage/* htmlcov/
+          else
+            echo "Could not find coverage reports directory"
+            exit 1
+          fi
+          
           git add htmlcov
-          git commit -m "Publishing SonarCloud and pytest reports"
+          git commit -m "Publishing coverage reports [skip ci]" || echo "No changes to commit"
           git push origin gh-pages
