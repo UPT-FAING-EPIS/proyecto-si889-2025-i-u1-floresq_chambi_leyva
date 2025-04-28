@@ -1,4 +1,5 @@
 name: SonarCloud Analysis
+
 on:
   push:
     branches:
@@ -27,7 +28,6 @@ jobs:
           sudo apt install -y openjdk-17-jdk
           java -version
 
-
       - name: Install SonarScanner
         run: |
           curl -L "https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-6.2.1.4610-linux-x64.zip" -o sonar-scanner-linux.zip
@@ -35,7 +35,7 @@ jobs:
           sudo ln -s /opt/sonar-scanner-6.2.1.4610-linux-x64/bin/sonar-scanner /usr/local/bin/sonar-scanner
           sonar-scanner --version
 
-      # Publicación específica para master
+      # Run SonarCloud Analysis (Master Branch)
       - name: Run SonarCloud Analysis (Master Branch)
         if: github.ref == 'refs/heads/master'
         env:
@@ -47,44 +47,51 @@ jobs:
             -Dsonar.organization=jaimeflores \
             -Dsonar.host.url=https://sonarcloud.io \
             -Dsonar.login=${{ secrets.SONAR_TOKEN }} \
-            -Dsonar.python.coverage.reportPaths=report_coverage/coverage.xml \
+            -Dsonar.python.coverage.reportPaths=Doc2Markdown/report_coverage/coverage.xml \
             -Dsonar.branch.name=master
 
-      # Análisis normal para main
-      - name: Run SonarCloud Analysis (Main Branch)
-        if: github.ref == 'refs/heads/main'
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      # Create Reports folder and move htmlcov
+      - name: Create Reports folder
         run: |
-          cd Doc2Markdown/app
-          sonar-scanner \
-            -Dsonar.projectKey=jaimeflores_doc2markdown \
-            -Dsonar.organization=jaimeflores \
-            -Dsonar.host.url=https://sonarcloud.io \
-            -Dsonar.login=${{ secrets.SONAR_TOKEN }} \
-            -Dsonar.python.coverage.reportPaths=report_coverage/coverage.xml
+          mkdir -p Doc2Markdown/Reportes
+          mv Doc2Markdown/report_coverage/htmlcov/ Doc2Markdown/Reportes/
 
-      # Configuración común para GitHub Pages
+      # Check if htmlcov exists
+      - name: Check if htmlcov exists
+        run: |
+          if [ -d "Doc2Markdown/Reportes/htmlcov" ]; then
+            echo "htmlcov directory exists."
+          else
+            echo "htmlcov directory does not exist. Exiting."
+            exit 1
+          fi
+
+      # Remove .gitignore from htmlcov
+      - name: Remove .gitignore from htmlcov
+        run: |
+          if [ -f "Doc2Markdown/Reportes/htmlcov/.gitignore" ]; then
+            rm -f Doc2Markdown/Reportes/htmlcov/.gitignore
+          fi
+
+      # Configure Git for GitHub Pages
       - name: Configure Git for GitHub Pages
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
 
+      # Commit local changes
+      - name: Commit local changes
+        run: |
+          git add . 
+          git commit -m "Saving analysis reports" || echo "No changes to commit"
+
+      # Publish report to GitHub Pages
       - name: Publish report to GitHub Pages
         run: |
           git fetch origin gh-pages
           git checkout gh-pages
           mkdir -p htmlcov
-          
-          if [ -d "Doc2Markdown/report_coverage" ]; then
-            cp -r Doc2Markdown/report_coverage/* htmlcov/
-          elif [ -d "report_coverage" ]; then
-            cp -r report_coverage/* htmlcov/
-          else
-            echo "Could not find coverage reports directory"
-            exit 1
-          fi
-          
+          cp -r Doc2Markdown/Reportes/htmlcov/* htmlcov/
           git add htmlcov
-          git commit -m "Publishing coverage reports [skip ci]" || echo "No changes to commit"
+          git commit -m "Publishing SonarCloud coverage report and htmlcov"
           git push origin gh-pages
