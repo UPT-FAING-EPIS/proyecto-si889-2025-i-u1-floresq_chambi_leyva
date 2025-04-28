@@ -1,0 +1,8 @@
+organization=jaimeflores
+projectKey=jaimeflores_doc2markdown
+serverUrl=https://sonarcloud.io
+serverVersion=8.0.0.62678
+branch=master
+dashboardUrl=https://sonarcloud.io/dashboard?id=jaimeflores_doc2markdown&branch=master
+ceTaskId=AZZ7169RNdd7HKtO1CRc
+ceTaskUrl=https://sonarcloud.io/api/ce/task?id=AZZ7169RNdd7HKtO1CRc

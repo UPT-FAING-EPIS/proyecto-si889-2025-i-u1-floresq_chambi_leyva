@@ -1,0 +1,8 @@
+user_controller.authenticate_user
+false
+aa208f807941c0dd3f04977cb973ec85
+user_controller.verify_password
+==
+filter
+first
+query

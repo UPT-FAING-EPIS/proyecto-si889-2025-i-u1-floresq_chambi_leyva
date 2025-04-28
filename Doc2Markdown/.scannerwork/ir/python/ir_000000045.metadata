@@ -1,0 +1,5 @@
+config.Config.init_app
+false
+6f3d5b86903fd7c2f05347e6b31dba3f
+os.makedirs
+os.path.exists

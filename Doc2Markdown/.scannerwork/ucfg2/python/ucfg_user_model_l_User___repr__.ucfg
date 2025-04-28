@@ -1,0 +1,39 @@
+
+models.user_model.User.__repr__|
+rD:\Proyecto Patrones\version 2\proyecto-si889-2025-i-u1-floresq_chambi_leyva\Doc2Markdown\app\models\user_model.py ("2*ù
+2 (J^
+\
+" (/
+%1"__id*D
+
+__unknown_file ((*&
+models.user_model.User"
+
+username[
+Y
+; (E
+%2"__id*A
+
+__unknown_file (%*#
+models.user_model.User"
+email˜
+•
+ (J
+%3"__concat* 
+ (!
+<User(username='*
+" (/
+
+%1*
+0 (:
+
+', email='*
+; (E
+
+%2*
+F (I
+')>"
+ (J
+
+%3B
+models.user_model.UserH

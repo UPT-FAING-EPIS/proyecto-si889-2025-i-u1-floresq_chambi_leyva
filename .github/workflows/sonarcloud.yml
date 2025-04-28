@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-      - master
 
 jobs:
   sonarcloud-analysis:
@@ -35,9 +34,8 @@ jobs:
           sudo ln -s /opt/sonar-scanner-6.2.1.4610-linux-x64/bin/sonar-scanner /usr/local/bin/sonar-scanner
           sonar-scanner --version
 
-      # Run SonarCloud Analysis (Master Branch)
-      - name: Run SonarCloud Analysis (Master Branch)
-        if: github.ref == 'refs/heads/master'
+      # Run SonarCloud Analysis 
+      - name: Run SonarCloud Analysis 
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
