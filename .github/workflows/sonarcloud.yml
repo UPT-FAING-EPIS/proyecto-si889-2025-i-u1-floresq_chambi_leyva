@@ -26,6 +26,11 @@ jobs:
           sudo apt install -y openjdk-17-jdk
           java -version
 
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
       - name: Install Python dependencies
         run: |
           python3 -m pip install --upgrade pip
@@ -33,7 +38,8 @@ jobs:
 
       - name: Run Pytest with coverage
         run: |
-          pytest --cov=Doc2Markdown/app --maxfail=1 --disable-warnings -q  # Ejecutar las pruebas con cobertura
+          pytest --cov=Doc2Markdown/app --cov-report=xml:report_coverage/coverage.xml  # Generar reporte XML
+          pytest --cov=Doc2Markdown/app --cov-report=html:report_coverage/htmlcov  # Generar reporte HTML
 
       - name: Install SonarScanner
         run: |
@@ -51,7 +57,8 @@ jobs:
             -Dsonar.projectKey=jaimeflores_doc2markdown \
             -Dsonar.organization=jaimeflores \
             -Dsonar.host.url=https://sonarcloud.io \
-            -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+            -Dsonar.login=${{ secrets.SONAR_TOKEN }} \
+            -Dsonar.python.coverage.reportPaths=report_coverage/coverage.xml  # Especificar el reporte XML para SonarCloud
 
       - name: Create Reports folder
         run: |
@@ -59,7 +66,7 @@ jobs:
 
       - name: Copy Coverage Report to Reports folder
         run: |
-          cp -r .coverage Doc2Markdown/app/Reportes  # Copiar el reporte de cobertura a la carpeta 'Reportes'
+          cp -r report_coverage Doc2Markdown/app/Reportes  # Copiar el reporte de cobertura a la carpeta 'Reportes'
 
       - name: Configure Git for GitHub Pages
         run: |
