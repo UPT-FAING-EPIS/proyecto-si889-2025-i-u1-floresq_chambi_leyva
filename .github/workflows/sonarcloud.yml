@@ -18,7 +18,15 @@ jobs:
       - name: Install build dependencies
         run: |
           sudo apt-get update
-          sudo apt install -y build-essential unixodbc-dev python3-pip msodbcsql17
+          sudo apt install -y build-essential unixodbc-dev python3-pip
+
+          # Agregar el repositorio de Microsoft para ODBC
+          curl https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key add -
+          sudo add-apt-repository "$(curl https://packages.microsoft.com/config/ubuntu/24.04/prod.list)"
+          sudo apt-get update
+
+          # Ahora instalar msodbcsql17
+          sudo apt install -y msodbcsql17
 
       - name: Install Java 17
         run: |
