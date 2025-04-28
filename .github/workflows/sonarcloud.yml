@@ -81,9 +81,10 @@ jobs:
           mkdir -p htmlcov
           cp -r /tmp/backup_htmlcov/* htmlcov/
 
+      # Commit y push sin importar cambios
       - name: Commit and push report
         run: |
-          git add htmlcov
-          git commit -m "Publishing SonarCloud coverage report"
+          git add htmlcov || true
+          git commit -m "Publishing SonarCloud coverage report" || echo "No changes to commit"
           git push origin gh-pages
 
