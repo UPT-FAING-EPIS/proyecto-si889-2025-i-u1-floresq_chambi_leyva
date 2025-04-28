@@ -8,15 +8,25 @@ from app.controllers.user_controller import router as user_router
 from config.database import Base, engine
 from config.config import Config
 import os
+from contextlib import asynccontextmanager
+from datetime import datetime, timezone
 
 # Crear tablas en la base de datos
 Base.metadata.create_all(bind=engine)
 
-# Inicializar app
+# Configuración de evento Lifespan para evitar la deprecación de on_event
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    # Código de inicialización
+    if not os.path.exists(Config.UPLOAD_FOLDER):
+        os.makedirs(Config.UPLOAD_FOLDER)
+    yield
+    # Código de limpieza si fuera necesario
 app = FastAPI(
     title="Doc2Markdown API",
     description="API para convertir documentos a Markdown",
-    version="1.0.0"
+    version="1.0.0",
+    lifespan=lifespan  # Usamos lifespan en lugar de on_event
 )
 
 # Configurar CORS
@@ -38,12 +48,6 @@ app.mount("/uploads", StaticFiles(directory=Config.UPLOAD_FOLDER), name="uploads
 
 # Configurar plantillas Jinja2
 templates = Jinja2Templates(directory="app/templates")
-
-# Crear directorio uploads si no existe
-@app.on_event("startup")
-async def startup_event():
-    if not os.path.exists(Config.UPLOAD_FOLDER):
-        os.makedirs(Config.UPLOAD_FOLDER)
 
 # Rutas Frontend
 @app.get("/", response_class=HTMLResponse)

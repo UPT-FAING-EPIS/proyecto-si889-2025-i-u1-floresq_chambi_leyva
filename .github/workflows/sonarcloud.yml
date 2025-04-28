@@ -1,4 +1,4 @@
-name: SonarCloud Analysis and Publish Report to GitHub Pages
+name: SonarCloud Analysis, Run Tests, and Publish Report to GitHub Pages
 
 on:
   push:
@@ -19,7 +19,7 @@ jobs:
       - name: Install build dependencies
         run: |
           sudo apt-get update
-          sudo apt install -y build-essential unixodbc-dev
+          sudo apt install -y build-essential unixodbc-dev python3-pip
 
       - name: Install Java 17
         run: |
@@ -27,7 +27,16 @@ jobs:
           sudo apt install -y openjdk-17-jdk
           java -version
 
-      - name: Download and extract SonarScanner
+      - name: Install Python dependencies
+        run: |
+          python3 -m pip install --upgrade pip
+          pip install pytest pytest-cov  # Instalar pytest y pytest-cov para generar cobertura de pruebas
+
+      - name: Run Pytest with coverage
+        run: |
+          pytest --cov=Doc2Markdown/app --maxfail=1 --disable-warnings -q  # Ejecutar las pruebas con cobertura
+
+      - name: Install SonarScanner
         run: |
           curl -L "https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-6.2.1.4610-linux-x64.zip" -o sonar-scanner-linux.zip
           unzip sonar-scanner-linux.zip -d /opt
@@ -49,6 +58,10 @@ jobs:
         run: |
           mkdir -p Doc2Markdown/app/Reportes  # Crear la carpeta 'Reportes' dentro de 'app'
 
+      - name: Copy Coverage Report to Reports folder
+        run: |
+          cp -r .coverage Doc2Markdown/app/Reportes  # Copiar el reporte de cobertura a la carpeta 'Reportes'
+
       - name: Configure Git for GitHub Pages
         run: |
           git config --global user.name "github-actions[bot]"
@@ -57,7 +70,7 @@ jobs:
       - name: Commit local changes
         run: |
           git add .  # Agregar todos los archivos
-          git commit -m "Saving analysis reports" || echo "No changes to commit"
+          git commit -m "Saving analysis and test reports" || echo "No changes to commit"
 
       - name: Publish report to GitHub Pages
         run: |
@@ -65,5 +78,5 @@ jobs:
           git checkout gh-pages
           cp -r Doc2Markdown/app/Reportes ./htmlcov  # Copiar los reportes generados
           git add htmlcov
-          git commit -m "Publishing SonarCloud analysis report"
+          git commit -m "Publishing SonarCloud and pytest reports"
           git push origin gh-pages
