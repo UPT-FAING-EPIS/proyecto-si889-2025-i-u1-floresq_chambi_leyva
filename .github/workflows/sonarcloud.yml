@@ -66,14 +66,23 @@ jobs:
           cp -r Doc2Markdown/report_coverage/htmlcov/* /tmp/backup_htmlcov/
 
 
-      - name: Publish report to GitHub Pages
+      - name: Fetch gh-pages and checkout
         run: |
           git fetch origin gh-pages
           git checkout gh-pages
 
+      - name: Configure Git identity
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Copy report from temp backup
+        run: |
           mkdir -p htmlcov
           cp -r /tmp/backup_htmlcov/* htmlcov/
 
+      - name: Commit and push report
+        run: |
           git add htmlcov
           git commit -m "Publishing SonarCloud coverage report"
           git push origin gh-pages
