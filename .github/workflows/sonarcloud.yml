@@ -47,30 +47,30 @@ jobs:
             -Dsonar.organization=jaimeflores \
             -Dsonar.host.url=https://sonarcloud.io \
             -Dsonar.login=${{ secrets.SONAR_TOKEN }} \
-            -Dsonar.python.coverage.reportPaths=Doc2Markdown/report_coverage/coverage.xml \
+            -Dsonar.python.coverage.reportPaths=report_coverage/coverage.xml \
             -Dsonar.branch.name=master
-
-      # Create Reports folder and move htmlcov
-      - name: Create Reports folder
-        run: |
-          mkdir -p Doc2Markdown/Reportes
-          mv Doc2Markdown/report_coverage/htmlcov/ Doc2Markdown/Reportes/
 
       # Check if htmlcov exists
       - name: Check if htmlcov exists
         run: |
-          if [ -d "Doc2Markdown/Reportes/htmlcov" ]; then
+          if [ -d "Doc2Markdown/report_coverage/htmlcov" ]; then
             echo "htmlcov directory exists."
           else
             echo "htmlcov directory does not exist. Exiting."
             exit 1
           fi
 
+      # Create Reportes directory and move htmlcov
+      - name: Create Reportes directory and move htmlcov
+        run: |
+          mkdir -p Doc2Markdown/Reportes
+          mv Doc2Markdown/report_coverage/htmlcov/* Doc2Markdown/Reportes/
+
       # Remove .gitignore from htmlcov
       - name: Remove .gitignore from htmlcov
         run: |
-          if [ -f "Doc2Markdown/Reportes/htmlcov/.gitignore" ]; then
-            rm -f Doc2Markdown/Reportes/htmlcov/.gitignore
+          if [ -f "Doc2Markdown/Reportes/.gitignore" ]; then
+            rm -f Doc2Markdown/Reportes/.gitignore
           fi
 
       # Configure Git for GitHub Pages
@@ -91,7 +91,7 @@ jobs:
           git fetch origin gh-pages
           git checkout gh-pages
           mkdir -p htmlcov
-          cp -r Doc2Markdown/Reportes/htmlcov/* htmlcov/
+          cp -r Doc2Markdown/Reportes/* htmlcov/
           git add htmlcov
-          git commit -m "Publishing SonarCloud coverage report and htmlcov"
+          git commit -m "Publishing SonarCloud coverage report"
           git push origin gh-pages
