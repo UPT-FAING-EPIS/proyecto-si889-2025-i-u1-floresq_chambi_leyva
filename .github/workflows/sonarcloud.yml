@@ -21,6 +21,10 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y build-essential unixodbc-dev
 
+      - name: Install ODBC Driver for SQL Server
+        run: |
+          sudo apt-get install -y msodbcsql17
+
       - name: Install Java 17
         run: |
           sudo apt update
@@ -80,7 +84,7 @@ jobs:
             git checkout gh-pages
           else
             git checkout --orphan gh-pages
-            git rm -rf .
+            git rm -rf . 
           fi
 
       - name: Configure Git identity
