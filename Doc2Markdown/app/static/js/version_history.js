@@ -18,6 +18,14 @@ document.addEventListener("DOMContentLoaded", () => {
         currentPage++;
         searchVersions(currentSearch, currentPage);
     });
+    
+    // Agregar evento para cerrar el modal al hacer clic en el botón cerrar
+    document.addEventListener('click', (e) => {
+        if (e.target.classList.contains('close-preview') || 
+            e.target.id === 'previewModal' && e.target === e.currentTarget) {
+            document.getElementById('previewModal').style.display = 'none';
+        }
+    });
 });
 
 async function searchVersions(documentTitle, page) {
@@ -58,6 +66,9 @@ async function searchVersions(documentTitle, page) {
             const li = document.createElement("li");
             li.className = "list-group-item d-flex justify-content-between align-items-center";
             
+            // Contenedor para título, versión y fecha (izquierda)
+            const leftContent = document.createElement("div");
+            
             // Enlace de descarga para el título
             const downloadLink = document.createElement("a");
             downloadLink.href = `/api/documents/download/${version.document_id}`;
@@ -78,6 +89,23 @@ async function searchVersions(documentTitle, page) {
             dateSpan.className = "text-muted";
             dateSpan.textContent = new Date(version.created_at).toLocaleString();
             
+            leftContent.appendChild(downloadLink);
+            leftContent.appendChild(versionSpan);
+            leftContent.appendChild(dateSpan);
+            
+            // Contenedor para botones (derecha)
+            const actionsContainer = document.createElement("div");
+            
+            // Botón de previsualizar
+            const previewBtn = document.createElement("a");
+            previewBtn.href = "#";
+            previewBtn.className = "text-primary me-3";
+            previewBtn.textContent = "Previsualizar";
+            previewBtn.onclick = (e) => {
+                e.preventDefault();
+                previewDocument(version.document_id);
+            };
+            
             // Botón de eliminar
             const deleteBtn = document.createElement("a");
             deleteBtn.href = "#";
@@ -88,11 +116,12 @@ async function searchVersions(documentTitle, page) {
                 deleteVersion(version.document_id, version.version_number);
             };
             
+            actionsContainer.appendChild(previewBtn);
+            actionsContainer.appendChild(deleteBtn);
+            
             // Agregar elementos al li
-            li.appendChild(downloadLink);
-            li.appendChild(versionSpan);
-            li.appendChild(dateSpan);
-            li.appendChild(deleteBtn);
+            li.appendChild(leftContent);
+            li.appendChild(actionsContainer);
             
             versionsList.appendChild(li);
         });
@@ -129,6 +158,43 @@ async function deleteVersion(documentId, versionNumber) {
             const data = await response.json();
             throw new Error(data.detail || "Error al eliminar la versión");
         }
+    } catch (error) {
+        console.error("Error:", error);
+        showAlert("Ocurrió un error: " + error.message, "danger");
+    }
+}
+
+// Nueva función para previsualizar documentos
+async function previewDocument(documentId) {
+    try {
+        const response = await fetch(`/api/documents/content/${documentId}`, {
+            method: "GET",
+            headers: { 
+                "Authorization": `Bearer ${localStorage.getItem("access_token")}` 
+            }
+        });
+        
+        if (!response.ok) {
+            const data = await response.json();
+            throw new Error(data.detail || "Error al obtener el contenido del documento");
+        }
+        
+        const data = await response.json();
+        
+        // Obtener el modal
+        const modal = document.getElementById('previewModal');
+        const titleElement = document.getElementById('previewTitle');
+        const contentElement = document.getElementById('previewContent');
+        
+        // Actualizar contenido
+        titleElement.textContent = `${data.title} (Versión ${data.version})`;
+        
+        // Convertir Markdown a HTML usando marked.js
+        contentElement.innerHTML = marked.parse(data.markdown_content);
+        
+        // Mostrar el modal
+        modal.style.display = 'block';
+        
     } catch (error) {
         console.error("Error:", error);
         showAlert("Ocurrió un error: " + error.message, "danger");

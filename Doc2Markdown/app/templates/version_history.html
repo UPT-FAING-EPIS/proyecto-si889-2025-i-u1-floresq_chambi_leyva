@@ -16,7 +16,22 @@
             <a href="#" id="loadMoreBtn" class="text-primary">Ver más</a>
         </div>
     </div>
+    
+    <!-- Modal para previsualización -->
+    <div id="previewModal" class="modal" style="display: none; position: fixed; z-index: 1; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.4);">
+        <div class="modal-content" style="background-color: #fefefe; margin: 10% auto; padding: 20px; border: 1px solid #888; width: 80%; max-width: 800px; border-radius: 5px;">
+            <div class="modal-header d-flex justify-content-between align-items-center mb-3">
+                <h4 id="previewTitle" class="m-0">Título del documento</h4>
+                <button class="close-preview btn btn-sm btn-outline-secondary" style="cursor: pointer;">&times;</button>
+            </div>
+            <div id="previewContent" class="p-3" style="border: 1px solid #ddd; border-radius: 4px; max-height: 60vh; overflow-y: auto;">
+                <!-- Aquí se mostrará el contenido Markdown renderizado -->
+            </div>
+        </div>
+    </div>
 </div>
 
+<!-- Incluir la biblioteca marked.js para renderizar Markdown -->
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 <script src="/static/js/version_history.js"></script>
 {% endblock %}

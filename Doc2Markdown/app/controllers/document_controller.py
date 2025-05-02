@@ -228,3 +228,30 @@ async def delete_document_version(
         "document_id": document_id,
         "version": version_number
     }
+
+@router.get("/content/{document_id}")
+async def get_document_content(
+    document_id: int,
+    user_id: int = Depends(get_user_from_token),
+    db: Session = Depends(get_db)
+):
+    # Verificar usuario
+    user = db.query(User).filter(User.user_id == user_id).first()
+    if not user:
+        raise HTTPException(status_code=404, detail="Usuario no encontrado")
+    
+    # Buscar documento
+    document = db.query(Document).filter(Document.document_id == document_id).first()
+    if not document:
+        raise HTTPException(status_code=404, detail="Documento no encontrado")
+    
+    # Verificar que el usuario tenga acceso al documento
+    if document.user_id != user_id:
+        raise HTTPException(status_code=403, detail="No tienes permiso para acceder a este documento")
+    
+    return {
+        "document_id": document.document_id,
+        "title": document.title,
+        "version": document.version,
+        "markdown_content": document.markdown_content
+    }

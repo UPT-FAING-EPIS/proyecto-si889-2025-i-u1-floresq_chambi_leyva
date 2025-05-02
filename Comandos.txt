@@ -1,0 +1,77 @@
+Servidor:
+newsqlserverdoc2markdownjknew
+
+Base de datos:
+newdbdoc2markdownjknew
+
+Usuario:
+miservidorsql25
+
+Contraseña:
+JaimeUpt2025
+
+
+-------------------------------
+Ejecución:
+
+python -m venv venv
+
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope Process
+
+.\venv\Scripts\Activate.ps1
+
+pip install -r requirements.txt
+
+python run.py
+
+--------------------------------
+
+Estructura
+
+/Doc2Markdown
+├── /app                        # Contiene la aplicación principal
+│   ├── /controllers            # Controladores: Lógica de la aplicación
+│   │   ├── document_controller.py
+│   │   └── user_controller.py
+│   ├── /models                 # Modelos: Definición de las clases de base de datos
+│   │   ├── user_model.py       # Interactúa con la tabla "users"
+│   │   ├── document_model.py   # Interactúa con la tabla "documents"
+│   │   ├── document_version_model.py # Interactúa con la tabla "document_versions"
+│   │   ├── conversion_log_model.py  # Interactúa con la tabla "conversion_logs"
+│   │   └── _init_.py
+│   ├── /utils                  # Utilidades: Funciones comunes
+│   │   ├── document_converter.py
+│   │   ├── file_handler.py
+│   │   └── version_control.py
+│   ├── /static                 # Archivos estáticos (CSS, JS, imágenes)
+│   │   ├── /css
+│   │   ├── /js
+│   │   └── /images
+│   ├── /templates              # Vistas: Templates HTML para el frontend
+│   │   ├── index.html
+│   │   ├── login.html
+│   │   └── document_conversion.html
+│   └── app.py                  # Archivo principal donde se inicia la aplicación Flask
+├── /config                     # Configuración del proyecto
+│   ├── config.py               # Archivo con configuraciones de base de datos y otras variables
+│   ├── database.py             # Archivo para manejar la conexión con la base de datos
+│   └── sonarcloud_config.py    # Configuración de SonarCloud para integración
+├── /tests                      # Directorio de pruebas
+│   ├── /unit_tests             # Pruebas unitarias
+│   │   ├── test_document.py
+│   │   └── test_user.py
+│   └── /integration_tests      # Pruebas de integración
+│       ├── test_document_integration.py
+│       └── test_user_integration.py
+├── /migrations                 # Migraciones de base de datos (si usas una herramienta como Flask-Migrate)
+│   └── versions
+├── /infra                  # Archivos Terraform para infraestructura
+│   ├── main.tf                 # Definición de la infraestructura (servidores, DB, etc.)
+│   ├── variables.tf            # Variables de configuración de Terraform
+│   ├── terraform.tfvars        # Valores específicos de entorno (como credenciales)
+│   └── outputs.tf              # Salidas de la infraestructura
+├── /requirements.txt           # Dependencias del proyecto
+├── /Dockerfile                 # Para contenerizar la aplicación (si es necesario)
+├── /README.md                  # Documentación básica del proyecto
+├── /uploads 
+└── /run.py                     # Script para ejecutar el servidor de desarrollo
