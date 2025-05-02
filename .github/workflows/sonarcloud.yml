@@ -39,6 +39,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r Doc2Markdown/requirements.txt
           pip install coverage pytest
+          pip install SQLAlchemy==2.0.40   # Instalación de SQLAlchemy
 
       - name: Run tests and generate coverage report
         run: |
