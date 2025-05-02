@@ -1,10 +1,9 @@
-
 name: SonarCloud Analysis
 
 on:
   push:
     branches:
-      - sonar
+      - main
 
 jobs:
   sonarcloud-analysis:
@@ -37,10 +36,13 @@ jobs:
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
-          cd Doc2Markdown
+          cd Doc2Markdown/app
           sonar-scanner \
-            -Dproject.settings=sonar-project.properties \
-            -Dsonar.login=${{ secrets.SONAR_TOKEN }} 
+            -Dsonar.projectKey=jaimeflores_doc2markdown \
+            -Dsonar.organization=jaimeflores \
+            -Dsonar.host.url=https://sonarcloud.io \
+            -Dsonar.login=${{ secrets.SONAR_TOKEN }} \
+            -Dsonar.python.coverage.reportPaths=report_coverage/coverage.xml \
        # Check if htmlcov exists
       - name: Check if htmlcov exists
         run: |
