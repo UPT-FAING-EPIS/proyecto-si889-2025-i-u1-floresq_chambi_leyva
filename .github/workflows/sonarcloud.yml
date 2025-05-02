@@ -1,9 +1,10 @@
+
 name: SonarCloud Analysis
 
 on:
   push:
     branches:
-      - sonar
+      - main
 
 jobs:
   sonarcloud-analysis:
@@ -20,49 +21,27 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y build-essential unixodbc-dev
-
-      - name: Install ODBC Driver for SQL Server
-        run: |
-          sudo apt-get install -y msodbcsql17
-
       - name: Install Java 17
         run: |
           sudo apt update
           sudo apt install -y openjdk-17-jdk
           java -version
-
       - name: Install SonarScanner
         run: |
           curl -L "https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-6.2.1.4610-linux-x64.zip" -o sonar-scanner-linux.zip
           unzip sonar-scanner-linux.zip -d /opt
           sudo ln -s /opt/sonar-scanner-6.2.1.4610-linux-x64/bin/sonar-scanner /usr/local/bin/sonar-scanner
           sonar-scanner --version
-
-      - name: Install Python dependencies and coverage tools
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r Doc2Markdown/requirements.txt
-          pip install coverage pytest
-          pip install SQLAlchemy==2.0.40   # Instalación de SQLAlchemy
-
-      - name: Run tests and generate coverage report
-        run: |
-          cd Doc2Markdown
-          coverage run -m pytest tests/
-          coverage xml -o report_coverage/coverage.xml
-          coverage html -d report_coverage/htmlcov
-
+      # Run SonarCloud Analysis 
       - name: Run SonarCloud Analysis 
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
+          cd Doc2Markdown
           sonar-scanner \
-            -Dsonar.projectKey=jaimeflores_doc2markdown \
-            -Dsonar.organization=jaimeflores \
-            -Dsonar.host.url=https://sonarcloud.io \
-            -Dsonar.login=${{ secrets.SONAR_TOKEN }} \
-            -Dsonar.python.coverage.reportPaths=Doc2Markdown/report_coverage/coverage.xml
-
+            -Dproject.settings=sonar-project.properties \
+            -Dsonar.login=${{ secrets.SONAR_TOKEN }} 
+       # Check if htmlcov exists
       - name: Check if htmlcov exists
         run: |
           if [ -d "Doc2Markdown/report_coverage/htmlcov" ]; then
@@ -71,32 +50,23 @@ jobs:
             echo "htmlcov directory does not exist. Exiting."
             exit 1
           fi
-
       - name: Backup htmlcov folder
         run: |
           mkdir -p /tmp/backup_htmlcov
           cp -r Doc2Markdown/report_coverage/htmlcov/* /tmp/backup_htmlcov/
-
-      - name: Create gh-pages branch if not exists
+      - name: Fetch gh-pages and checkout
         run: |
-          git fetch
-          if git show-ref --quiet refs/heads/gh-pages; then
-            git checkout gh-pages
-          else
-            git checkout --orphan gh-pages
-            git rm -rf . 
-          fi
-
+          git fetch origin gh-pages
+          git checkout gh-pages
       - name: Configure Git identity
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-
       - name: Copy report from temp backup
         run: |
           mkdir -p htmlcov
           cp -r /tmp/backup_htmlcov/* htmlcov/
-
+      # Commit y push sin importar cambios
       - name: Commit and push report
         run: |
           git add htmlcov || true
