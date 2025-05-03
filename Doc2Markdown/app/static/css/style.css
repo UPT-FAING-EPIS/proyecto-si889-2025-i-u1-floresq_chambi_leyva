@@ -46,3 +46,21 @@
   .navbar-brand:hover::before {
     transform: rotate(10deg);
   }
+
+  .btn {
+    border-radius: var(--border-radius);
+    transition: all var(--transition-speed);
+    font-weight: 500;
+    padding: 8px 16px;
+  }
+  
+  #loginBtn {
+    background-color: transparent;
+    border: 1px solid white;
+    color: white;
+  }
+  
+  #loginBtn:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    transform: translateY(-2px);
+  }
