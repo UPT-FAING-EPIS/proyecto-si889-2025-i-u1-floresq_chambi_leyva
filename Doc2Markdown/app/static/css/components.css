@@ -155,3 +155,42 @@
     color: #16a085;
     text-decoration: underline;
   }
+
+  .custom-tooltip {
+    position: relative;
+    display: inline-block;
+  }
+  
+  .custom-tooltip .tooltip-text {
+    visibility: hidden;
+    background-color: var(--dark-gray);
+    color: white;
+    text-align: center;
+    padding: 5px 10px;
+    border-radius: 4px;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%;
+    left: 50%;
+    transform: translateX(-50%);
+    opacity: 0;
+    transition: opacity var(--transition-speed);
+    font-size: 0.8rem;
+    white-space: nowrap;
+  }
+  
+  .custom-tooltip .tooltip-text::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: var(--dark-gray) transparent transparent transparent;
+  }
+  
+  .custom-tooltip:hover .tooltip-text {
+    visibility: visible;
+    opacity: 1;
+  }
