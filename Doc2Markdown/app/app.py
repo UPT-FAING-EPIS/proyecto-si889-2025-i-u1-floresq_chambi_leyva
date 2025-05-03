@@ -74,3 +74,7 @@ async def api_home(request: Request):
 @app.get("/version_history", response_class=HTMLResponse)
 async def version_history_page(request: Request):
     return templates.TemplateResponse("version_history.html", {"request": request})
+
+@app.get("/improved_document/{document_id}", response_class=HTMLResponse)
+async def improved_document_page(request: Request, document_id: int):
+    return templates.TemplateResponse("improved_document.html", {"request": request, "document_id": document_id})
