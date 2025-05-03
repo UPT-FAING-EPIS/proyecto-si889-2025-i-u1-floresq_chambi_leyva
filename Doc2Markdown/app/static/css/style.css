@@ -301,4 +301,9 @@
     box-shadow: var(--box-shadow);
     margin-top: 1rem;
   }
+
+  #previewContainer {
+    background-color: #f8f9fa;
+  }
+  
   
