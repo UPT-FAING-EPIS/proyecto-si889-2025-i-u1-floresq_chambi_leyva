@@ -81,13 +81,11 @@ async function fetchDocuments() {
                     // Div para botones
                     const buttonsDiv = document.createElement("div");
                     
-                    // Botón para previsualizar (puedes añadirlo si lo necesitas)
+                    // Botón de previsualización
                     const previewBtn = document.createElement("button");
-                    previewBtn.className = "btn btn-sm btn-outline-primary me-2";
+                    previewBtn.className = "btn btn-sm btn-outline-info mx-1";
                     previewBtn.textContent = "Previsualizar";
-                    previewBtn.onclick = () => {
-                        previewDocument(doc.document_id);
-                    };
+                    previewBtn.addEventListener("click", () => previewDocument(doc.document_id));
                     
                     // Nuevo botón para mejorar
                     const improveBtn = document.createElement("button");
@@ -180,13 +178,13 @@ async function improveDocument(documentId) {
     }
 }
 
-// Función para previsualizar documento (añadida para completitud)
+// Función para previsualizar documentos (similar a la de version_history.js)
 async function previewDocument(documentId) {
     try {
         const response = await fetch(`/api/documents/content/${documentId}`, {
             method: "GET",
-            headers: { 
-                "Authorization": `Bearer ${localStorage.getItem("access_token")}` 
+            headers: {
+                "Authorization": `Bearer ${localStorage.getItem("access_token")}`
             }
         });
         
@@ -197,11 +195,35 @@ async function previewDocument(documentId) {
         
         const data = await response.json();
         
-        // Mostrar modal con previsualización (implementa esta funcionalidad según tus necesidades)
-        // Aquí puedes usar un modal existente o crear uno nuevo
+        // Obtener el modal
+        const modal = document.getElementById('previewModal');
+        const titleElement = document.getElementById('previewTitle');
+        const contentElement = document.getElementById('previewContent');
+        const closeBtn = document.querySelector('.close-preview');
         
+        // Actualizar contenido
+        titleElement.textContent = `${data.title} (Versión ${data.version})`;
+        
+        // Convertir Markdown a HTML usando marked.js
+        contentElement.innerHTML = marked.parse(data.markdown_content);
+        
+        // Mostrar el modal
+        modal.style.display = 'block';
+
+        // Configurar evento para cerrar modal
+        closeBtn.onclick = function() {
+            modal.style.display = 'none';
+        };
+
+        // Cerrar al hacer clic fuera del contenido
+        modal.onclick = function(event) {
+            if (event.target === modal) {
+                modal.style.display = 'none';
+            }
+        };
+
     } catch (error) {
         console.error("Error:", error);
-        alert("Ocurrió un error: " + error.message);
+        showAlert("Ocurrió un error: " + error.message, "danger");
     }
 }

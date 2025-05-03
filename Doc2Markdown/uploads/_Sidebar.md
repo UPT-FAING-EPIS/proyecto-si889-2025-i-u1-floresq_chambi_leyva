@@ -18,7 +18,9 @@
 - [Articulo (Mejorado)](document_32.md)
 - [Articulo (Mejorado)](document_33.md)
 - [Proyecto](document_34.md)
+- [Proyecto (Mejorado)](document_35.md)
+- [Tarea](document_36.md)
 
 ---
 
-> Última actualización: 2025-05-03 01:46:13
+> Última actualización: 2025-05-03 03:14:21
