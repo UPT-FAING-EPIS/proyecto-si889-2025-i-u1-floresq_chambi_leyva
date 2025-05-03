@@ -61,3 +61,16 @@
       opacity: 1;
     }
   }
+
+  #documentList .list-group-item {
+    animation: fadeIn 0.3s ease-out;
+    animation-fill-mode: both;
+  }
+  
+  #documentList .list-group-item:nth-child(odd) {
+    animation-delay: 0.1s;
+  }
+  
+  #documentList .list-group-item:nth-child(even) {
+    animation-delay: 0.2s;
+  }
