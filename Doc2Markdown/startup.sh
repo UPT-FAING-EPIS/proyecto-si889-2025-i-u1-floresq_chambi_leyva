@@ -1,4 +1,10 @@
 #!/bin/bash
 
-# Ejecutar la aplicación con gunicorn + uvicorn.worker
-gunicorn -w 4 -k uvicorn.workers.UvicornWorker app.app:app --bind=0.0.0.0 --timeout 300
+# Navegar al directorio donde está la aplicación
+cd /home/site/wwwroot
+
+# Instalar las dependencias si es necesario
+pip install --no-cache-dir -r requirements.txt
+
+# Ejecutar la aplicación con uvicorn a través del script run.py
+python run.py
