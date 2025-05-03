@@ -165,3 +165,24 @@
     transform: translateY(-2px);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
   }
+
+  .btn-outline-primary {
+    color: var(--secondary-color);
+    border-color: var(--secondary-color);
+  }
+  
+  .btn-outline-primary:hover, .btn-outline-primary:focus {
+    background-color: var(--secondary-color);
+    color: white;
+    transform: translateY(-2px);
+  }
+  
+  .btn-outline-secondary {
+    color: #7f8c8d;
+    border-color: #7f8c8d;
+  }
+  
+  .btn-outline-secondary:hover, .btn-outline-secondary:focus {
+    background-color: #7f8c8d;
+    color: white;
+  }
