@@ -269,3 +269,28 @@
     font-size: 0.8rem;
     font-weight: 500;
   }
+
+  .document-actions {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  
+  .document-actions button {
+    padding: 5px 10px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    border-radius: var(--border-radius);
+    font-size: 0.9rem;
+    background-color: white;
+    border: 1px solid #dfe6e9;
+    color: var(--primary-color);
+    transition: all var(--transition-speed);
+  }
+  
+  .document-actions button:hover {
+    background-color: #f8f9fa;
+    border-color: #b2bec3;
+  }
