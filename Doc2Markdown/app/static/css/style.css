@@ -92,3 +92,23 @@
     max-width: 1200px;
     margin: 0 auto;
   }
+
+  .card {
+    border: none;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    transition: transform var(--transition-speed), box-shadow var(--transition-speed);
+    overflow: hidden;
+    margin-bottom: 1.5rem;
+  }
+  
+  .card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12);
+  }
+  
+  .card-header {
+    background-color: rgba(44, 62, 80, 0.05);
+    border-bottom: 1px solid rgba(44, 62, 80, 0.1);
+    padding: 1rem;
+  }
