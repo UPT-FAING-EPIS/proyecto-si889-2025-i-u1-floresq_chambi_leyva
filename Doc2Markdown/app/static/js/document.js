@@ -90,7 +90,7 @@ async function fetchDocuments() {
                     // Nuevo botón para mejorar
                     const improveBtn = document.createElement("button");
                     improveBtn.className = "btn btn-sm btn-outline-success";
-                    improveBtn.textContent = "Mejorar";
+                    improveBtn.textContent = "Mejorar con IA";
                     improveBtn.onclick = () => {
                         improveDocument(doc.document_id);
                     };
