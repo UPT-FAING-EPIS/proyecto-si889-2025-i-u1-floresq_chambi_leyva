@@ -32,13 +32,4 @@ jobs:
         publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
         package: ./Doc2Markdown
 
-    # OPCIONAL: Verificar conexión a Azure SQL
-    - name: Verify Azure SQL connection
-      run: |
-        echo "Verifying connection to Azure SQL Database..."
-        sqlcmd -S ${{ secrets.SQL_SERVER }} -d ${{ secrets.SQL_DB }} -U ${{ secrets.SQL_USERNAME }} -P ${{ secrets.SQL_PASSWORD }} -Q "SELECT GETDATE();"
-      env:
-        SQL_SERVER: ${{ secrets.SQL_SERVER }}
-        SQL_DB: ${{ secrets.SQL_DB }}
-        SQL_USERNAME: ${{ secrets.SQL_USERNAME }}
-        SQL_PASSWORD: ${{ secrets.SQL_PASSWORD }}
+    
