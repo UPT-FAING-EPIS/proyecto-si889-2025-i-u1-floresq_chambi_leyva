@@ -362,3 +362,29 @@
     border-radius: var(--border-radius);
     overflow-x: auto;
   }
+
+  .markdown-content blockquote {
+    border-left: 4px solid var(--secondary-color);
+    padding-left: 1rem;
+    color: #636e72;
+    font-style: italic;
+  }
+  
+  .markdown-content table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+  }
+  
+  .markdown-content th, .markdown-content td {
+    border: 1px solid #dfe6e9;
+    padding: 8px 12px;
+  }
+  
+  .markdown-content th {
+    background-color: #f1f2f6;
+  }
+  
+  .markdown-content tr:nth-child(even) {
+    background-color: #f8f9fa;
+  }
