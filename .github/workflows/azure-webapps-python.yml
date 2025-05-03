@@ -1,0 +1,44 @@
+name: Deploy FastAPI to Azure Web App
+
+on:
+  push:
+    branches:
+      - main  
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.13'
+
+    - name: Install dependencies
+      working-directory: ./Doc2Markdown
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    - name: Deploy to Azure Web App via publish profile
+      uses: azure/webapps-deploy@v2
+      with:
+        app-name: doc2markdown
+        slot-name: 'production'
+        publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+        package: ./Doc2Markdown
+
+    # OPCIONAL: Verificar conexión a Azure SQL
+    - name: Verify Azure SQL connection
+      run: |
+        echo "Verifying connection to Azure SQL Database..."
+        sqlcmd -S ${{ secrets.SQL_SERVER }} -d ${{ secrets.SQL_DB }} -U ${{ secrets.SQL_USERNAME }} -P ${{ secrets.SQL_PASSWORD }} -Q "SELECT GETDATE();"
+      env:
+        SQL_SERVER: ${{ secrets.SQL_SERVER }}
+        SQL_DB: ${{ secrets.SQL_DB }}
+        SQL_USERNAME: ${{ secrets.SQL_USERNAME }}
+        SQL_PASSWORD: ${{ secrets.SQL_PASSWORD }}
