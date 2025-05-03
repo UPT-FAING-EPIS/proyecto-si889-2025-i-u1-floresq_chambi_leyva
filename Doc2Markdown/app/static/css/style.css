@@ -199,3 +199,14 @@
     transform: translateX(5px);
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   }
+
+  .modal-content {
+    border-radius: var(--border-radius);
+    border: none;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  }
+  
+  .modal-header {
+    border-bottom: 1px solid rgba(44, 62, 80, 0.1);
+    background-color: rgba(44, 62, 80, 0.02);
+  }
