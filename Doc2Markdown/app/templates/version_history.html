@@ -2,7 +2,13 @@
 
 {% block content %}
 <div>
-    <h2>Historial de Versiones</h2>
+    <!-- Botón de regreso añadido aquí -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="mb-0">Historial de Versiones</h2>
+        <a href="/document_conversion" class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-left"></i> Regresar
+        </a>
+    </div>
 
     <div class="mb-3">
         <label for="documentSearch" class="form-label">Buscar documento por nombre</label>
@@ -10,6 +16,7 @@
         <button id="searchBtn" class="btn btn-primary mt-2">Buscar</button>
     </div>
 
+    <!-- Resto de tu código permanece igual -->
     <div id="searchResults">
         <ul id="versionsList" class="list-group"></ul>
         <div id="loadMoreContainer" class="text-center mt-3" style="display: none;">

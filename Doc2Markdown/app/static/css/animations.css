@@ -1,0 +1,144 @@
+/* animations.css - Additional animations for Doc2Markdown */
+
+/* Bounce animation for document list items */
+@keyframes subtle-bounce {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-5px);
+    }
+  }
+  
+  /* Fade in animation */
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  /* Pulse animation for buttons */
+  @keyframes pulse {
+    0% {
+      box-shadow: 0 0 0 0 rgba(26, 188, 156, 0.4);
+    }
+    70% {
+      box-shadow: 0 0 0 10px rgba(26, 188, 156, 0);
+    }
+    100% {
+      box-shadow: 0 0 0 0 rgba(26, 188, 156, 0);
+    }
+  }
+  
+  /* Rotate animation for loading */
+  @keyframes rotate {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  
+  /* Slide in from left */
+  @keyframes slideInLeft {
+    from {
+      transform: translateX(-20px);
+      opacity: 0;
+    }
+    to {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+  
+  /* Slide in from right */
+  @keyframes slideInRight {
+    from {
+      transform: translateX(20px);
+      opacity: 0;
+    }
+    to {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+  
+  /* Apply animations to elements */
+  
+  /* For the document list items */
+  #documentList .list-group-item {
+    animation: fadeIn 0.3s ease-out;
+    animation-fill-mode: both;
+  }
+  
+  #documentList .list-group-item:nth-child(odd) {
+    animation-delay: 0.1s;
+  }
+  
+  #documentList .list-group-item:nth-child(even) {
+    animation-delay: 0.2s;
+  }
+  
+  /* Button hover animation */
+  .btn-primary:hover, .btn-success:hover {
+    animation: pulse 1.5s infinite;
+  }
+  
+  /* Logo animation on page load */
+  .navbar-brand::before {
+    animation: rotate 1s ease-in-out;
+  }
+  
+  /* Form fields animation on focus */
+  .form-control:focus {
+    animation: subtle-bounce 0.5s ease-out;
+  }
+  
+  /* Document preview animation */
+  #previewContent {
+    animation: fadeIn 0.5s ease-out;
+  }
+  
+  /* Page content animations */
+  .text-center h1 {
+    animation: slideInLeft 0.5s ease-out;
+  }
+  
+  .text-center p {
+    animation: fadeIn 0.7s ease-out;
+    animation-delay: 0.2s;
+    animation-fill-mode: both;
+  }
+  
+  .text-center .btn {
+    animation: slideInRight 0.5s ease-out;
+    animation-delay: 0.4s;
+    animation-fill-mode: both;
+  }
+  
+  /* Form animation */
+  #loginForm, #registerForm, #uploadForm {
+    animation: fadeIn 0.5s ease-out;
+  }
+  
+  /* Custom loader animation */
+  .custom-loader {
+    width: 40px;
+    height: 40px;
+    border: 3px solid #f3f3f3;
+    border-top: 3px solid var(--secondary-color);
+    border-radius: 50%;
+    animation: rotate 1s linear infinite;
+    margin: 0 auto;
+  }
+  
+  /* Card hover effect */
+  .card:hover {
+    animation: subtle-bounce 0.5s ease-out;
+  }
