@@ -111,3 +111,24 @@
         animation-delay: 0.4s;
         animation-fill-mode: both;
       }
+
+        /* Form animation */
+  #loginForm, #registerForm, #uploadForm {
+    animation: fadeIn 0.5s ease-out;
+  }
+  
+  /* Custom loader animation */
+  .custom-loader {
+    width: 40px;
+    height: 40px;
+    border: 3px solid #f3f3f3;
+    border-top: 3px solid var(--secondary-color);
+    border-radius: 50%;
+    animation: rotate 1s linear infinite;
+    margin: 0 auto;
+  }
+  
+  /* Card hover effect */
+  .card:hover {
+    animation: subtle-bounce 0.5s ease-out;
+  }
