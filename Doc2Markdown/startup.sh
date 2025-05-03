@@ -1,6 +1,4 @@
 #!/bin/bash
-# Activar el entorno virtual
-source /home/site/wwwroot/venv/bin/activate
 
-# Ejecutar la aplicación con uvicorn
-/home/site/wwwroot/venv/bin/python3 /home/site/wwwroot/run.py
+# Ejecutar la aplicación con gunicorn + uvicorn.worker
+gunicorn -w 4 -k uvicorn.workers.UvicornWorker app.app:app --bind=0.0.0.0 --timeout 300
