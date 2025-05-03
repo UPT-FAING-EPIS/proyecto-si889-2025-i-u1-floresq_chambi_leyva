@@ -1,3 +1,6 @@
+/* components.css - Specific component styles for Doc2Markdown */
+
+/* Document card styling */
 .document-card {
     background-color: white;
     border-radius: var(--border-radius);
@@ -34,7 +37,8 @@
     padding: 0.25rem 0.5rem;
     font-size: 0.85rem;
   }
-
+  
+  /* File upload area with drag and drop */
   .file-upload-area {
     border: 2px dashed #dfe6e9;
     border-radius: var(--border-radius);
@@ -83,7 +87,8 @@
     opacity: 0;
     cursor: pointer;
   }
-
+  
+  /* Custom badge */
   .custom-badge {
     display: inline-block;
     padding: 0.25rem 0.5rem;
@@ -118,7 +123,8 @@
     background-color: #9b59b6;
     color: white;
   }
-
+  
+  /* Navigation breadcrumb */
   .custom-breadcrumb {
     display: flex;
     align-items: center;
@@ -155,7 +161,8 @@
     color: #16a085;
     text-decoration: underline;
   }
-
+  
+  /* Custom tooltip */
   .custom-tooltip {
     position: relative;
     display: inline-block;
@@ -194,7 +201,8 @@
     visibility: visible;
     opacity: 1;
   }
-
+  
+  /* Empty state */
   .empty-state {
     text-align: center;
     padding: 3rem 1rem;
@@ -223,7 +231,8 @@
     margin-left: auto;
     margin-right: auto;
   }
-
+  
+  /* Progress indicator */
   .progress-indicator {
     height: 4px;
     background-color: #dfe6e9;
@@ -239,7 +248,8 @@
     width: 0;
     transition: width 0.3s ease;
   }
-
+  
+  /* Status indicator */
   .status-indicator {
     display: inline-block;
     width: 10px;
@@ -259,7 +269,8 @@
   .status-pending {
     background-color: #f39c12;
   }
-
+  
+  /* Version tag */
   .version-tag {
     display: inline-block;
     padding: 2px 6px;
@@ -269,7 +280,8 @@
     font-size: 0.8rem;
     font-weight: 500;
   }
-
+  
+  /* Document actions */
   .document-actions {
     display: flex;
     gap: 0.5rem;
