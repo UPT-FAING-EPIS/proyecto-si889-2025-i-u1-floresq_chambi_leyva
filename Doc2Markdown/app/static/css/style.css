@@ -112,3 +112,21 @@
     border-bottom: 1px solid rgba(44, 62, 80, 0.1);
     padding: 1rem;
   }
+
+  .form-control {
+    border-radius: var(--border-radius);
+    border: 1px solid #dee2e6;
+    padding: 10px 15px;
+    transition: border var(--transition-speed), box-shadow var(--transition-speed);
+  }
+  
+  .form-control:focus {
+    border-color: var(--secondary-color);
+    box-shadow: 0 0 0 0.2rem rgba(26, 188, 156, 0.25);
+  }
+  
+  label.form-label {
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+    color: var(--primary-color);
+  }
