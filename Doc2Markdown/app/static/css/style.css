@@ -186,3 +186,16 @@
     background-color: #7f8c8d;
     color: white;
   }
+
+  .list-group-item {
+    border: none;
+    margin-bottom: 8px;
+    border-radius: var(--border-radius) !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    transition: all var(--transition-speed);
+  }
+  
+  .list-group-item:hover {
+    transform: translateX(5px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
