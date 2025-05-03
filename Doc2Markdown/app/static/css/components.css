@@ -223,3 +223,19 @@
     margin-left: auto;
     margin-right: auto;
   }
+
+  .progress-indicator {
+    height: 4px;
+    background-color: #dfe6e9;
+    border-radius: 2px;
+    overflow: hidden;
+    margin: 1rem 0;
+  }
+  
+  .progress-indicator .progress-bar {
+    height: 100%;
+    background-color: var(--secondary-color);
+    border-radius: 2px;
+    width: 0;
+    transition: width 0.3s ease;
+  }
