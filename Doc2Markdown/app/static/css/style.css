@@ -293,3 +293,12 @@
     padding: 1.5rem;
     border-radius: var(--border-radius);
   }
+
+  #loginForm, #registerForm {
+    background-color: white;
+    padding: 1.5rem;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    margin-top: 1rem;
+  }
+  
