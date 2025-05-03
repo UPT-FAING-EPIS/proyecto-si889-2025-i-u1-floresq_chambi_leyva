@@ -306,4 +306,24 @@
     background-color: #f8f9fa;
   }
   
-  
+  @media (max-width: 768px) {
+    .navbar .container-fluid {
+      flex-direction: column;
+    }
+    
+    .navbar-brand {
+      margin-bottom: 0.5rem;
+    }
+    
+    main.container {
+      padding: 1rem;
+    }
+    
+    h1 {
+      font-size: 2rem;
+    }
+    
+    h2 {
+      font-size: 1.75rem;
+    }
+  }
