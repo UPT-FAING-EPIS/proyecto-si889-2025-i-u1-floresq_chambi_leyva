@@ -118,3 +118,40 @@
     background-color: #9b59b6;
     color: white;
   }
+
+  .custom-breadcrumb {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    padding: 0.5rem 0;
+  }
+  
+  .custom-breadcrumb .item {
+    display: flex;
+    align-items: center;
+    color: #7f8c8d;
+    font-size: 0.9rem;
+  }
+  
+  .custom-breadcrumb .item:not(:last-child)::after {
+    content: "›";
+    margin: 0 0.5rem;
+    color: #b2bec3;
+    font-size: 1.2rem;
+  }
+  
+  .custom-breadcrumb .item:last-child {
+    color: var(--primary-color);
+    font-weight: 500;
+  }
+  
+  .custom-breadcrumb a {
+    color: var(--secondary-color);
+    text-decoration: none;
+    transition: all var(--transition-speed);
+  }
+  
+  .custom-breadcrumb a:hover {
+    color: #16a085;
+    text-decoration: underline;
+  }
