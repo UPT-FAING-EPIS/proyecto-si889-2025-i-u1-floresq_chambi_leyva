@@ -153,3 +153,15 @@
     border-color: #6c7a7d;
     transform: translateY(-2px);
   }
+
+  .btn-success {
+    background-color: #27ae60;
+    border-color: #27ae60;
+  }
+  
+  .btn-success:hover, .btn-success:focus {
+    background-color: #219955;
+    border-color: #219955;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  }
