@@ -1,0 +1,36 @@
+.document-card {
+    background-color: white;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    padding: 1.25rem;
+    margin-bottom: 1rem;
+    transition: all var(--transition-speed);
+    border-left: 4px solid transparent;
+  }
+  
+  .document-card:hover {
+    border-left-color: var(--secondary-color);
+    transform: translateX(5px);
+  }
+  
+  .document-card h4 {
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: var(--primary-color);
+  }
+  
+  .document-card .meta {
+    color: #7f8c8d;
+    font-size: 0.85rem;
+    margin-bottom: 0.75rem;
+  }
+  
+  .document-card .actions {
+    display: flex;
+    gap: 0.5rem;
+  }
+  
+  .document-card .actions button {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.85rem;
+  }
