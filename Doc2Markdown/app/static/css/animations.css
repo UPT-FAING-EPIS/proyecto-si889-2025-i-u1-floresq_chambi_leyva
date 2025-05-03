@@ -74,3 +74,28 @@
   #documentList .list-group-item:nth-child(even) {
     animation-delay: 0.2s;
   }
+
+    /* Button hover animation */
+    .btn-primary:hover, .btn-success:hover {
+        animation: pulse 1.5s infinite;
+      }
+      
+      /* Logo animation on page load */
+      .navbar-brand::before {
+        animation: rotate 1s ease-in-out;
+      }
+      
+      /* Form fields animation on focus */
+      .form-control:focus {
+        animation: subtle-bounce 0.5s ease-out;
+      }
+      
+      /* Document preview animation */
+      #previewContent {
+        animation: fadeIn 0.5s ease-out;
+      }
+      
+      /* Page content animations */
+      .text-center h1 {
+        animation: slideInLeft 0.5s ease-out;
+      }
