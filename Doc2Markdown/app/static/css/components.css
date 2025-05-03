@@ -194,3 +194,32 @@
     visibility: visible;
     opacity: 1;
   }
+
+  .empty-state {
+    text-align: center;
+    padding: 3rem 1rem;
+    background-color: white;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+  }
+  
+  .empty-state .icon {
+    font-size: 3rem;
+    color: #dfe6e9;
+    margin-bottom: 1rem;
+  }
+  
+  .empty-state .title {
+    font-size: 1.25rem;
+    color: var(--primary-color);
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+  }
+  
+  .empty-state .description {
+    color: #7f8c8d;
+    margin-bottom: 1.5rem;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+  }
