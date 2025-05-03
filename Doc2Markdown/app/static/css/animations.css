@@ -99,3 +99,15 @@
       .text-center h1 {
         animation: slideInLeft 0.5s ease-out;
       }
+
+      .text-center p {
+        animation: fadeIn 0.7s ease-out;
+        animation-delay: 0.2s;
+        animation-fill-mode: both;
+      }
+      
+      .text-center .btn {
+        animation: slideInRight 0.5s ease-out;
+        animation-delay: 0.4s;
+        animation-fill-mode: both;
+      }
